@@ -1,0 +1,124 @@
+// Place all the styles related to the Products controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.product-info {
+  .images{
+    position: relative;
+    //width: 572px;
+    //height: 150px;
+    .slick-slide{
+      height: 150px;
+      position: relative;
+      & > img {
+        margin: auto;
+        position: absolute;
+        bottom: 0;
+        top: 0;
+        left: 0;
+        right: 0;
+      }
+    }
+  }
+  .description {
+    word-wrap: break-word;
+  }
+  .product-title{
+    font-size: 150%;
+    font-weight:bold;
+    text-align: center;
+  }
+  .table-review-cell{
+    width: 220px;
+  }
+  .table-review-type{
+    width: 150px;
+  }
+  .table-review-value{
+    &.good{
+      background-color: #ccff90;
+    }
+    &.bad{
+      background-color: #ff8a80;
+    }
+  }
+  .card-content{
+    padding: 10px 20px;
+    .price{
+      font-size: 1.5em;
+      & > span{
+        font-size: 1.5em;
+      }
+    }
+  }
+  .nothing-to-buy {
+    color: white;
+  }
+  .responsive-table .table-review-cell {
+    tr {
+      width: 100%;
+      .progress {
+        margin: -8% 0 0;
+      }
+    }
+  }
+}
+.slick-next, .slick-prev{
+  background: image_url('/assets/arrow-right.png') transparent center center no-repeat;
+  width: 48px;
+  height: 48px;
+  display: block;
+  &:hover, &:focus{
+    background: image_url('/assets/arrow-right.png') transparent center center no-repeat;
+  }
+  &::before{
+    content: "";
+  }
+}
+.slick-prev {
+  background-image: image_url('/assets/arrow-left.png');
+  &:hover, &:focus{
+    background: image_url('/assets/arrow-left.png') transparent center center no-repeat;
+  }
+}
+.slick-list{
+  margin: 0 36px;
+}
+
+.pagination{
+  li{
+    &.active{
+      background-color: #424242 !important;
+    }
+  }
+}
+.comments{
+  .comments-wrapper{
+    .comment{
+      padding: 15px;
+      margin: 20px 0;
+      &.good{
+        background-color: #e8f5e9;
+      }
+      &.bad{
+        background-color: #ffcdd2;
+      }
+      .comment-response{
+        padding: 10px;
+        background-color: rgba(255,255,255,0.52);
+        box-shadow: 1px 1px 3px grey;
+        border-radius: 3px;
+      }
+      .comment-text{
+
+      }
+      .comment-date{
+        color: #757575;
+      }
+    }
+  }
+}
+.card-action{
+  a{
+    color: white !important;
+  }
+}

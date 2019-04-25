@@ -1,0 +1,17 @@
+// Place all the styles related to the Sections controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "common";
+.sections-table {
+  @include respond-to(handhelds) {
+    thead th, tbody td{
+      &:nth-child(3),
+      &:nth-child(4) {
+        display: none;
+      }
+    }
+  }
+  .price-sign:after {
+    padding-left: 3px;
+  }
+}

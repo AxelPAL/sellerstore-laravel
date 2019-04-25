@@ -1,14 +1,294 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require materialize/sass/materialize.scss
+ *= require swipebox/src/css/swipebox
+ *= require slick-carousel/slick/slick.scss
+ *= require slick-carousel/slick/slick-theme.scss
+ *= require intro.js/minified/introjs.min.css
+ *= require progress_bar
+ *= require_tree .
+ *= require_self
+ */
 
-// Fonts
-@import url('https://fonts.googleapis.com/css?family=Nunito');
+//@import "compass";
+@import "https://fonts.googleapis.com/icon?family=Material+Icons";
 
-// Variables
-@import 'variables';
-
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
-
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+body{
+    color: black;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    font-family: 'Roboto', sans-serif;
 }
+//.background-image{
+//  background-image: url('/assets/background.jpg');
+//  background-size: cover;
+//  background-attachment: fixed;
+//  background-repeat: no-repeat;
+//  position: fixed;
+//  width: 100%;
+//  height: 100%;
+//  -webkit-filter: blur(3px);
+//  -moz-filter: blur(3px);
+//  -o-filter: blur(3px);
+//  -ms-filter: blur(3px);
+//  filter: blur(3px);
+//}
+.mainWrapper{
+    flex: 1;
+    //z-index: 2;
+}
+header{
+    nav ul li {
+        width: auto;
+        input{
+            width: auto !important;
+            margin-bottom: 0 !important;
+        }
+    }
+    a.button-collapse {
+        display: block;
+    }
+    .side-nav{
+        li{
+            display: block;
+            width: 100%;
+        }
+    }
+}
+.left-menu{
+    font-size: 14px;
+    .collection{
+        ul{
+            padding-left: 20px;
+            a{
+                padding-right: 10px;
+            }
+        }
+    }
+}
+.content-zone{
+    padding-top: 10px !important;
+    margin-top: 20px;
+    border-radius: 2px;
+    word-wrap: break-word;
+    h1{
+        text-align: center;
+        font-size: 2.2rem;
+    }
+    .main-page_header{
+        text-align: center;
+        font-size: 2.2rem;
+    }
+    .pagination {
+        //background-color: color("materialize-orange", "accent-3");
+        .page {
+            &.active {
+                color: white;
+                display: inline-block;
+                font-size: 1.2rem;
+                padding: 0 10px;
+                line-height: 30px;
+            }
+        }
+        .next, .last, .prev, .first {
+            a {
+
+            }
+        }
+    }
+}
+.search-div{
+    width: 300px;
+    height: 64px !important;
+    input {
+        width: 100% !important;
+    }
+    label {
+        transform: none !important;
+    }
+}
+.sidebar{
+    overflow: inherit !important;
+    li{
+        padding: 5px 0;
+        a{
+            width: 90%;
+        }
+    }
+    .dropdown-content{
+        width: 350px !important;
+    }
+}
+.main-page_categories{
+    .main-page_category {
+        display: inline-block;
+        padding: 3px 5px;
+        margin: 2px 0;
+        border: 1px solid #f6f6f6;
+    }
+}
+.main-page_items{
+    > div{
+        display: inline-block;
+        width: 150px;
+        padding: 15px;
+        > a{
+            display: block;
+            text-align: center;
+            > img{
+                display: block;
+                margin: 0 auto;
+                max-width: 100%;
+            }
+            > span{
+                display: block;
+                word-wrap: break-word;
+            }
+            > strong{
+                font-size: 20px;
+            }
+        }
+    }
+}
+footer{
+    z-index: 2;
+    a, a:visited, a:link, a:hover, a:focus{
+        color: white
+    }
+    .statistic{
+        color: white;
+        h2{
+            font-size: 2rem;
+        }
+        h3{
+            font-size: 1.5rem;
+        }
+        table{
+            td, th{
+                padding: 1px 0;
+            }
+            th{
+                width: 200px;
+            }
+            .review-good{
+                color: #457D03;
+            }
+            .review-bad{
+                color: #A70303;
+            }
+        }
+    }
+    &.page-footer .footer-copyright{
+        height: 70px;
+        line-height: 15px;
+    }
+}
+.predict-menu{
+    & > ul{
+        position: absolute;
+        z-index: 3;
+        & > li{
+            width: 100%;
+            & > a {
+                width: 100%;
+            }
+        }
+    }
+}
+
+.introjs-helperNumberLayer {
+    padding: 0;
+    width: 25px;
+    height: 24px;
+}
+//.page-footer{
+//  background-color: rgba(66, 66, 66, 0.85) !important;
+//  background: linear-gradient(182deg, rgba(66, 66, 66, 0.65), rgba(66, 66, 66, 1));
+//}
+.sidebar-popular{
+    .sidebar-popular-title{
+        //color: white;
+        text-align: center;
+        padding: 15px 10% 15px 0;
+        font-size: 1.3em;
+    }
+}
+.section{
+    .section-title{
+        position: relative;
+    }
+}
+.main-logo{
+    max-width: 100px;
+}
+.mobile-search-button{
+    float: right;
+    margin-right: 5%;
+}
+#nav-mobile{
+    margin-right: 15px;
+}
+
+.search-button-div {
+    margin-top: 15px;
+}
+
+@mixin spec-block($color){
+    padding: 20px;
+    margin: 10px 20px;
+    display: block;
+    background: $color;
+    color: white;
+    box-shadow: 1px 1px 5px #8A8A8A;
+}
+
+attention{
+    @include spec-block(#1a237e); /**/
+}
+delivery{
+    @include spec-block(#FF9100); /*#FF9100*/
+}
+
+.buy-button {
+    margin-right: 8px !important;
+}
+
+.rules {
+    ul {
+        padding-left: 40px;
+        margin: 15px 0;
+        list-style-type: disc;
+        li {
+            list-style-type: disc;
+        }
+    }
+}
+
+.content_center {
+    h2 {
+        font-size: 1.9rem;
+        text-align: center;
+    }
+}
+
+.price-sign {
+    &:after {
+        content: '₽';
+    }
+}
+@import "products.css.scss";
+@import "progress_bar";
+@import "search.css.scss";
+@import "sections.css.scss";
+@import "sellers.css.scss";

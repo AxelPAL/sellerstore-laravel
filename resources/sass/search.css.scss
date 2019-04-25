@@ -1,0 +1,27 @@
+// Place all the styles related to the search controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import 'variables';
+@import 'common';
+.query{
+  padding-left: 0 !important;
+}
+.search-wrapper {
+  i {
+    top: 20%;
+  }
+}
+.search-table{
+  margin: 0 auto;
+  th:nth-child(2) {
+    min-width: 60px;
+  }
+  a{
+    display: block;
+    height: auto;
+    line-height: 1.5;
+  }
+}
+.search-button{
+  margin-top: 2%;
+}
