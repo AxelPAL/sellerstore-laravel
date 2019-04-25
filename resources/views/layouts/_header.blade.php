@@ -38,9 +38,6 @@
                         </form>
                     </div>
                 </li>
-                <li>
-                    <a href="/sections">Каталог</a>
-                </li>
             </ul>
             <a href="/search" class="mobile-search-button show-on-small show-on-mid hide-on-large-only">
                 <i class="material-icons">search</i>

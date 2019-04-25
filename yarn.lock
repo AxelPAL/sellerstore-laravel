@@ -2877,6 +2877,11 @@ growly@^1.3.0:
   resolved "https://registry.yarnpkg.com/growly/-/growly-1.3.0.tgz#f10748cbe76af964b7c96c93c6bcc28af120c081"
   integrity sha1-8QdIy+dq+WS3yWyTxrzCivEgwIE=
 
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
+  integrity sha1-BO93hiz/K7edMPdpIJWTAiK/YPE=
+
 handle-thing@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.0.tgz#0e039695ff50c93fc288557d696f3c1dc6776754"
@@ -3518,7 +3523,7 @@ jquery-sticky@^1.0.4:
   dependencies:
     jquery "*"
 
-jquery@*, jquery@>=1.2.6, jquery@>=1.6:
+jquery@*, jquery@>=1.2.6, jquery@>=1.6, "jquery@^3.0.0 || ^2.1.4":
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.0.tgz#8de513fa0fa4b2c7d2e48a530e26f0596936efdf"
   integrity sha512-ggRCXln9zEqv6OqAGXFEcshF5dSBvCkzj6Gm2gzuR5fWawaX8t7cxKVkkygKODrDAzKdoYw3l/e3pm3vlT4IbQ==
@@ -3896,10 +3901,13 @@ map-visit@^1.0.0:
   dependencies:
     object-visit "^1.0.0"
 
-materialize-css@^1.0.0-rc.2:
-  version "1.0.0-rc.2"
-  resolved "https://registry.yarnpkg.com/materialize-css/-/materialize-css-1.0.0-rc.2.tgz#b9e6b18f698c6ef77bb6b628d59147faf131eff5"
-  integrity sha512-FuQmSyq4Qv0ov7A2qXw0E6/jbQzSWx2P1pg2/XQDYTkkSc/GyiFAxu3fw9zgShwuTvyumEiw5jkxQWT9siqMBQ==
+materialize-css@0.100.2:
+  version "0.100.2"
+  resolved "https://registry.yarnpkg.com/materialize-css/-/materialize-css-0.100.2.tgz#9ca32b24904c9a04491fc7d0a2e9402e7b1dae07"
+  integrity sha512-Bf4YeoJCIdk4dlpnmVX+DIOJBbqOKwfBPD+tT5bxwXNFMLk649CGbldqtnctkkfMp+fGgSAsdYu9lo1ZolZqgA==
+  dependencies:
+    hammerjs "^2.0.8"
+    jquery "^3.0.0 || ^2.1.4"
 
 md5.js@^1.3.4:
   version "1.3.5"
