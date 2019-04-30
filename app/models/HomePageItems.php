@@ -5,6 +5,7 @@ namespace App\models;
 use Cache;
 use GuzzleHttp\Client;
 use PHPHtmlParser\Dom;
+use SimpleXMLElement;
 
 class HomePageItems
 {
@@ -93,7 +94,49 @@ class HomePageItems
                     $categories[] = compact('id', 'name');
                 }
                 return $categories;
-            });
+            }
+        );
         return $categories;
+    }
+
+    public function getSidebar(): array
+    {
+        $self = $this;
+        $sidebar = $this->cache::remember(
+            'sidebar',
+            now()->addHours(12),
+            static function () use ($self) {
+                $sidebarData = [
+                    'id_catalog' => 0,
+                    'rows' => 500
+                ];
+                $xml = $self->prepareXml($sidebarData);
+                $content = $self->getResponseFromPlati($xml, 'sections');
+                return json_decode(json_encode((array)$content->folder), true);
+            }
+        );
+        return $sidebar;
+
+    }
+
+    private function prepareXml(array $data): SimpleXMLElement
+    {
+        $xml = new SimpleXMLElement('<digiseller.request></digiseller.request>');
+        $xml->addChild('guid_agent', 'C1127FCB0AD845F9A95E51A25973CA3D');
+        foreach ($data as $key => $item) {
+            $xml->addChild($key, $item);
+        }
+        return $xml;
+    }
+
+    private function getResponseFromPlati(SimpleXMLElement $xml, string $pageName): SimpleXMLElement
+    {
+        $result = $this->client->post(self::PLATI_URL . "/xml/$pageName.asp", [
+            'body' => $xml->asXML(),
+            'headers' => [
+                'Content-Type' => 'text/xml'
+            ]
+        ]);
+        return simplexml_load_string($result->getBody()->getContents());
     }
 }

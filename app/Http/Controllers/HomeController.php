@@ -11,7 +11,7 @@ class HomeController extends Controller
         $popularCategories = $homePageItems->getPopularCategories();
         $items = $homePageItems->parseHomeItems();
         $q = '';
-        $sidebar = [];
+        $sidebar = $homePageItems->getSidebar();
         return view('home', compact('popularCategories', 'items', 'q', 'sidebar'));
     }
 }

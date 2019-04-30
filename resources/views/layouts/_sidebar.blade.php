@@ -1,11 +1,11 @@
 <div class="sidebar-wrapper">
     @if ($sidebar)
         <ul class="sidebar">
-            @foreach($sidebar as $folder)
+            @foreach($sidebar['folder'] as $folder)
                 <li class="collection-item">
-                    <a href="/category/{{$folder['id']}}"
+                    <a href="/category/{{$folder['@attributes']['id']}}"
                        class="dropdown-button btn orange accent-3"
-                       data-activates="dropdown{{$folder['id']}}"
+                       data-activates="dropdown{{$folder['@attributes']['id']}}"
                     >
                         @if ($folder['name_folder'] === 'Программное обеспечение')
                             ПО
@@ -14,10 +14,10 @@
                         @endif
                         <span class="badge">{{$folder['cnt_goods']}}</span>
                     </a>
-                    <ul class="dropdown-content" id="dropdown{{$folder['id']}}">
+                    <ul class="dropdown-content" id="dropdown{{$folder['@attributes']['id']}}">
                         @foreach($folder['folder'] as $x)
                             <li>
-                                <a href="/category/{{$x['id']}}">
+                                <a href="/category/{{$x['@attributes']['id']}}">
                                     {{$x['name_folder']}}
                                     <span class="badge">{{$x['cnt_goods']}}</span>
                                 </a>

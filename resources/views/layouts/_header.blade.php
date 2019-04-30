@@ -43,9 +43,9 @@
                 <i class="material-icons">search</i>
             </a>
             <ul class="side-nav" id="mobile-side-menu">
-                @foreach($sidebar as $item)
+                @foreach($sidebar['folder'] as $folder)
                     <li>
-                        <a href="/category/{{$folder['id']}}" class="dropdown-button" data-activates="dropdown{{$folder['id']}}">
+                        <a href="/category/{{$folder['@attributes']['id']}}" class="dropdown-button" data-activates="dropdown{{$folder['@attributes']['id']}}">
                             @if ($folder['name_folder'] === 'Программное обеспечение')
                                 ПО
                             @else
@@ -53,15 +53,17 @@
                             @endif
                         </a>
                         <span class="badge">{{$folder['cnt_goods']}}</span>
-                        <ul class="dropdown-content" id="dropdown{{$folder['id']}}">
-                            @foreach($folder['folder'] as $x)
-                                <li>
-                                    <a href="/category/{{$x['id']}}">
-                                        | {{$x['name_folder']}}
-                                        <span class="badge">{{$x['cnt_goods']}}</span>
-                                    </a>
-                                </li>
-                            @endforeach
+                        <ul class="dropdown-content" id="dropdown{{$folder['@attributes']['id']}}">
+                            @if (!empty($folder['folder']))
+                                @foreach($folder['folder'] as $x)
+                                    <li>
+                                        <a href="/category/{{$x['@attributes']['id']}}">
+                                            | {{$x['name_folder']}}
+                                            <span class="badge">{{$x['cnt_goods']}}</span>
+                                        </a>
+                                    </li>
+                                @endforeach
+                            @endif
                         </ul>
                     </li>
                 @endforeach
