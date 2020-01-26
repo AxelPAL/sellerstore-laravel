@@ -7,9 +7,8 @@ use GuzzleHttp\Client;
 use PHPHtmlParser\Dom;
 use SimpleXMLElement;
 
-class HomePageItems
+class Plati
 {
-    public const PLATI_URL = 'http://plati.io';
     /**
      * @var Client
      */
@@ -24,6 +23,11 @@ class HomePageItems
 
         $this->client = $client;
         $this->cache = $cache;
+    }
+
+    public function getPlatiBaseUrl()
+    {
+        return env('PLATI_BASE_URL');
     }
 
     public function parseHomeItems(): array
@@ -41,7 +45,7 @@ class HomePageItems
             while ($id > 0) {
                 $id = $id === -1 ? 0 : $id;
                 $queryParams['id'] = $id;
-                $result = $self->client->get(self::PLATI_URL . '/asp/items.asp', [
+                $result = $self->client->get($this->getPlatiBaseUrl() . '/asp/items.asp', [
                     'query' => $queryParams
                 ]);
                 $dom = new Dom();
@@ -115,6 +119,21 @@ class HomePageItems
         );
     }
 
+    public function getProduct(int $id)
+    {
+        /*
+            uri = URI(PLATI_URL)
+            Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+              @response = http.post('/xml/goods_info.asp', xml, initheader = {'Content-Type' =>'text/xml'})
+            end
+         * */
+        $sidebarData = [
+            'id_goods' => $id,
+        ];
+        $xml = $this->prepareXml($sidebarData);
+        return $this->getResponseFromPlati($xml, 'goods_info');
+    }
+
     private function prepareXml(array $data): SimpleXMLElement
     {
         $xml = new SimpleXMLElement('<digiseller.request></digiseller.request>');
@@ -127,7 +146,7 @@ class HomePageItems
 
     private function getResponseFromPlati(SimpleXMLElement $xml, string $pageName): SimpleXMLElement
     {
-        $result = $this->client->post(self::PLATI_URL . "/xml/$pageName.asp", [
+        $result = $this->client->post($this->getPlatiBaseUrl() . "/xml/$pageName.asp", [
             'body' => $xml->asXML(),
             'headers' => [
                 'Content-Type' => 'text/xml'

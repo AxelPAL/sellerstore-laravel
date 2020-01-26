@@ -19,7 +19,7 @@
                         <a href="/sections">Каталог</a>
                     </li>
                     <li>
-                        <a href="https://www.oplata.info/info/?lang=ru-RU">Мои покупки</a>
+                        <a target="_blank" href="https://www.oplata.info/info/?lang=ru-RU">Мои покупки</a>
                     </li>
                 </ul>
             </div>
@@ -27,7 +27,7 @@
     </div>
     <div class="footer-copyright">
         <div class="container">
-            <p>"© 2016-" + {{date('y')}} + " SellerStore.ru"</p>
+            <p>© 2016 - {{date('Y')}} SellerStore.ru</p>
             <a href="mailto:admin@sellerstore.ru">Связаться с администратором</a>
         </div>
     </div>

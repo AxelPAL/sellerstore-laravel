@@ -110,6 +110,10 @@ header .side-nav li {
           transform: none !important;
 }
 
+.search-div label i {
+  font-size: 2em !important;
+}
+
 .sidebar {
   overflow: inherit !important;
 }
@@ -247,6 +251,12 @@ footer.page-footer .footer-copyright {
   margin-right: 15px;
 }
 
+#nav-mobile a:hover,
+#nav-mobile a:active {
+  color: white;
+  text-decoration: none;
+}
+
 .search-button-div {
   margin-top: 15px;
 }
@@ -291,6 +301,16 @@ delivery {
 }
 
 .price-sign:after {
+  content: "\20BD";
+}
+
+.collection-item span.badge {
+  background-color: transparent;
+  color: #f7f7f7;
+  margin-top: 2% !important;
+}
+
+.ruble:before {
   content: "\20BD";
 }
 

@@ -116,6 +116,9 @@ header{
     }
     label {
         transform: none !important;
+        i {
+            font-size: 2em !important;
+        }
     }
 }
 .sidebar{
@@ -238,6 +241,10 @@ footer{
 }
 #nav-mobile{
     margin-right: 15px;
+    a:hover, a:active {
+        color: white;
+        text-decoration: none;
+    }
 }
 
 .search-button-div {
@@ -287,6 +294,21 @@ delivery{
         content: '₽';
     }
 }
+
+.collection-item {
+    span.badge {
+        background-color: transparent;
+        color: #f7f7f7;
+        margin-top: 2% !important;
+    }
+}
+
+.ruble {
+    &:before {
+        content: '₽';
+    }
+}
+
 @import "products.css.scss";
 @import "progress_bar";
 @import "search.css.scss";

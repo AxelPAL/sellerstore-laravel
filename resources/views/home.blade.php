@@ -26,7 +26,7 @@
                     <a href="/products/@if (Request::get('tour') === '1') {{$item['id']}}?tour=2 @else {{$item['id']}} @endif">
                         <img src={{$item['image']}} alt=""/>
                         <span>{{$item['name']}}</span>
-                        <strong>{{$item['price']}}</strong>
+                        <strong>{{$item['price']}} <span class="ruble"></span></strong>
                     </a>
                 </div>
             @endforeach
