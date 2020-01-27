@@ -23,7 +23,7 @@
         @if (!empty($items))
             @foreach($items as $item)
                 <div>
-                    <a href="/products/@if (Request::get('tour') === '1') {{$item['id']}}?tour=2 @else {{$item['id']}} @endif">
+                    <a href="/products/{{$item['id']}}{{Request::get('tour') === '1' ? '?tour=2' : ''}}">
                         <img src={{$item['image']}} alt=""/>
                         <span>{{$item['name']}}</span>
                         <strong>{{$item['price']}} <span class="ruble"></span></strong>

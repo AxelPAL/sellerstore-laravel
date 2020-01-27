@@ -13,3 +13,4 @@
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('products/{id}', 'ProductController@product');
+Route::get('buy-product', 'ProductController@buy');

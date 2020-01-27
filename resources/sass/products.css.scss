@@ -58,6 +58,14 @@
       width: 100%;
       .progress {
         margin: -8% 0 0;
+        height: auto;
+        .progress-bar {
+          span {
+            margin-top: -10px;
+            display: block;
+            padding: 10px 0;
+          }
+        }
       }
     }
   }

@@ -13,7 +13,8 @@ class ProductView
         $percent = 0;
         if (($goodResponses + $badResponses) > 0) {
             $percent = $goodResponses / ($goodResponses + $badResponses) * 100;
-        } elseif ($percent > 80) {
+        }
+        if ($percent > 80) {
             $percent = 80;
         }
         return $percent;
@@ -26,7 +27,8 @@ class ProductView
         $percent = 0;
         if (($goodResponses + $badResponses) > 0) {
             $percent = $badResponses / ($goodResponses + $badResponses) * 100;
-        } elseif ($percent > 20) {
+        }
+        if ($percent < 20) {
             $percent = 20;
         }
         return $percent;

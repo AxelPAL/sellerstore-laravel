@@ -121,12 +121,6 @@ class Plati
 
     public function getProduct(int $id)
     {
-        /*
-            uri = URI(PLATI_URL)
-            Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
-              @response = http.post('/xml/goods_info.asp', xml, initheader = {'Content-Type' =>'text/xml'})
-            end
-         * */
         $sidebarData = [
             'id_goods' => $id,
         ];

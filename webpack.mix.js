@@ -11,15 +11,22 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/js/app.js', 'public/js/dist')
-   .js('node_modules/bootstrap/dist/js/bootstrap.min.js', 'public/js/dist')
-   .sass('node_modules/materialize-css/sass/materialize.scss', 'public/css/dist')
-   .sass('node_modules/slick-carousel/slick/slick.scss', 'public/css/dist')
-   .sass('node_modules/slick-carousel/slick/slick-theme.scss', 'public/css/dist')
-   .sass('resources/sass/app.scss', 'public/css/dist');
+mix.sass('resources/sass/app.scss', 'public/css/dist');
+mix.copy('node_modules/swipebox/src/css/swipebox.min.css', 'public/css/dist');
 mix.styles([
     'node_modules/bootstrap/dist/css/bootstrap.min.css',
     'node_modules/intro.js/minified/introjs.min.css',
     'public/css/dist/*.css',
 ], 'public/css/app.css');
-mix.combine(['public/js/dist/*'], 'public/js/app.js');
+mix.combine([
+    'node_modules/jquery/dist/cdn/jquery-2.1.1.min.js',
+    'node_modules/bootstrap/dist/js/bootstrap.min.js',
+    'node_modules/materialize-css/dist/js/materialize.min.js',
+    'node_modules/jquery-sticky/jquery.sticky.js',
+    'node_modules/tablesorter/dist/js/jquery.tablesorter.min.js',
+    'node_modules/slick-carousel/slick/slick.min.js',
+    'node_modules/list.js/dist/list.min.js',
+    'node_modules/intro.js/minified/intro.min.js',
+    'node_modules/swipebox/src/js/jquery.swipebox.min.js',
+    'resources/js/app.js'
+], 'public/js/app.js');
