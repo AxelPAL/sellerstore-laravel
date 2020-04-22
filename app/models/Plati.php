@@ -144,6 +144,27 @@ class Plati
         return $this->getResponseFromPlati($xml, 'goods_info');
     }
 
+    public function getResponses(int $productId, int $sellerId, int $rows = 100): array
+    {
+        $responses = [];
+        $xml = $this->prepareXml([
+            'id_goods' => $productId,
+            'id_seller' => $sellerId,
+            'rows' => $rows
+        ]);
+        $result = $this->client->post($this->getPlatiBaseUrl() . '/xml/responses.asp', [
+            'body' => $xml->asXML(),
+            'headers' => [
+                'Content-Type' => 'text/xml'
+            ]
+        ]);
+        $data = simplexml_load_string($result->getBody()->getContents());
+        if (!empty($data) && !empty($data->rows->row)) {
+            $responses = ((array)$data->rows)['row'] ?? [];
+        }
+        return $responses;
+    }
+
     private function prepareXml(array $data): SimpleXMLElement
     {
         $xml = new SimpleXMLElement('<digiseller.request></digiseller.request>');

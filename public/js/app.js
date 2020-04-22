@@ -360,7 +360,7 @@ function init() {
         var commentList = new List('comments-wrapper', {
             valueNames: ['comment'],
             page: 5,
-            plugins: [ListPagination({})]
+            pagination: true
         });
     }
     $(".table-review-cell .progress-bar").on('click', function (e) {

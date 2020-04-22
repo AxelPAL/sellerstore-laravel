@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\models\Plati;
+use App\Sale;
 use App\View\ProductView;
 use Illuminate\Http\Request;
 use Meta;
@@ -27,25 +28,31 @@ class ProductController extends Controller
         Meta::set('title', "Купить $title");
         Meta::set('description', "Купить $title");
         Meta::set('keywords', $keywords);
-        return view('product', compact('product', 'sidebar', 'statistics', 'q'));
+
+        $responses = $plati->getResponses($id, (int)$product->{'id_seller'});
+
+        return view('product', compact('product', 'sidebar', 'statistics', 'q', 'responses'));
     }
 
     public function buy(Request $request)
     {
-        // todo add Sale model
-        /*
-            sale = Sale.new
-            sale.ip= request.env['REMOTE_ADDR']
-            sale.user_agent= request.user_agent
-            sale.product= id
-            sale.is_bot = check_is_bot
-            sale.save
-          end
-         * */
         $id = (int)$request->input('product');
+        $sale = new Sale();
+        $sale->product = $id;
+        $sale->ip = $request->ip();
+        $userAgent = $request->userAgent();
+        $sale->user_agent = $userAgent;
+        $sale->is_bot = $this->checkUserAgent($userAgent);
+        $sale->save();
         $referralCode = env('REFERRAL_CODE');
         $domain = env('APP_URL');
         return redirect("https://www.oplata.info/asp2/pay_wm.asp?id_d=$id&id_po=0&ai=$referralCode&" .
             "curr=WMR&failpage=$domain/products/$id&lang=ru-RU&nocash=973411");
+    }
+
+    private function checkUserAgent(string $userAgent)
+    {
+        return strpos($userAgent, 'Googlebot') !== false
+            || strpos($userAgent, 'YandexBot') !== false;
     }
 }

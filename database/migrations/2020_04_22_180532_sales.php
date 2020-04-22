@@ -17,6 +17,7 @@ class Sales extends Migration
             $table->increments('id');
             $table->string('ip');
             $table->integer('product');
+            $table->boolean('is_bot');
             $table->text('user_agent');
             $table->timestamps();
         });

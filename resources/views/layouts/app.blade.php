@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <title>{!! Meta::get('title') !!}</title>
-    @meta('description')
-    @meta('keywords')
+    {!! Meta::tag('description') !!}
+    {!! Meta::tag('keywords') !!}
     <meta name="language" content="ru"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     @include('layouts._favicon')
