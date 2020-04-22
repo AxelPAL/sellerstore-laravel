@@ -4,7 +4,9 @@
             <div class="col l6 s12">
                 <h5 class="white-text">Информация о сайте</h5>
                 <p class="grey-text text-lighten-4">Данный сервис содержит цифровые товары от тысяч продавцов</p>
-                = raw @statistics
+                @if ($statistics)
+                    {!! $statistics !!}
+                @endif
             </div>
             <div class="col l4 s12">
                 <h5 class="white-text">Меню</h5>

@@ -4,14 +4,18 @@
     "license": "Proprietary",
     "require": {
         "php": "^7.1.3",
-        "ext-simplexml": "*",
         "ext-json": "*",
+        "ext-simplexml": "*",
+        "davejamesmiller/laravel-breadcrumbs": "5.x",
+        "eusonlito/laravel-meta": "^3.1",
         "fideloper/proxy": "^4.0",
         "guzzlehttp/guzzle": "^6.3",
+        "iamcal/lib_autolink": "^1.7",
         "laravel/framework": "^6",
         "laravel/tinker": "^1.0",
         "paquettg/php-html-parser": "^2.0",
-        "spatie/laravel-responsecache": "^6.0"
+        "spatie/laravel-responsecache": "^6.0",
+        "stevegrunwell/time-constants": "^1.1"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.2",

@@ -1,7 +1,10 @@
 @inject('helper', 'App\View\ProductView')
 @extends('layouts.app')
+@section('breadcrumbs')
+    {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render('product', (string)$product->name_goods, (int)$product->id_section, (string)$product->name_section) }}
+@stop
 @section('content')
-    <h1>{{$product->name_goods}}</h1>
+    <h1>{{$helper->prepareDescription($product->name_goods)}}</h1>
     <div class="product-info">
         <div class="main-block col s12">
             <div class="col s12 m12 l9">
@@ -78,12 +81,12 @@
             <div class="col s12">
                 <div class="description" data-step="2" data-intro="Описание товара можете прочитать чуть ниже, сразу после галереи изображений.">
                     <div class="description-title product-title">Описание</div>
-                    {!! html_entity_decode($product->info_goods) !!}
+                    {!! $helper->prepareDescription($product->info_goods) !!}
                 </div>
                 @unless (empty($product->add_info_goods))
                     <div class="add_description" data-step="3" data-intro="Обязательно прочитайте дополнительную информацию. Здесь продавцы часто указывают важные примечания к данному товару.">
                         <div class="description-title product-title">Дополнительное описание</div>
-                        {!! html_entity_decode($product->add_info_goods) !!}
+                        {!! $helper->prepareDescription($product->add_info_goods) !!}
                     </div>
                 @endunless
 {{--                @unless @responses.empty?--}}

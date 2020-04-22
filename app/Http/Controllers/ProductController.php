@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\models\Plati;
+use App\View\ProductView;
 use Illuminate\Http\Request;
+use Meta;
 
 class ProductController extends Controller
 {
@@ -18,7 +20,14 @@ class ProductController extends Controller
         //transformations
 
         $sidebar = $plati->getSidebar();
-        return view('product', compact('product', 'q', 'sidebar'));
+        $statistics = $plati->getStatistics();
+        $productHelper = new ProductView();
+        $title = $productHelper->prepareDescription($product->{'name_goods'});
+        $keywords = 'купить ключ ' . $title;
+        Meta::set('title', "Купить $title");
+        Meta::set('description', "Купить $title");
+        Meta::set('keywords', $keywords);
+        return view('product', compact('product', 'sidebar', 'statistics', 'q'));
     }
 
     public function buy(Request $request)

@@ -2,6 +2,7 @@
 
 namespace App\View;
 
+use Asika\Autolink\Linker;
 use SimpleXMLElement;
 
 class ProductView
@@ -34,7 +35,7 @@ class ProductView
         return $percent;
     }
 
-    public function replaceLinksToPlati(string $content)
+    public function replaceLinksToPlati(string $content): string
     {
         $platiUrl = env('PLATI_BASE_DOMAIN');
         $replacements = [
@@ -42,47 +43,36 @@ class ProductView
             ['plati.market', $platiUrl],
             ['plati.io', $platiUrl],
             ['plati.ru', $platiUrl],
-            ['/\w+.plati.ru\/asp\/list_seller.asp\?id_s=/', "$platiUrl/seller/"],
-            ['plati.ru/asp/pay.asp?id_d=', "$platiUrl/products/"],
+            ["$platiUrl/asp/pay.asp?id_d=", "$platiUrl/products/"],
             ['www.', ''],
-            ['plati.ru/asp/pay.asp?idd=', "$platiUrl/products/"],
-            ['plati.ru/asp/seller.asp?id_s=', "$platiUrl/seller/"],
-//        [/plati.ru\/seller\/(\w+)\/(\w+)/){ "$platiUrl/seller/" + Regexp.last_match[2] ],
+            ["$platiUrl/asp/pay.asp?idd=", "$platiUrl/products/"],
+            ["$platiUrl/asp/seller.asp?id_s=", "$platiUrl/seller/"],
+            ['/\/asp\/list_seller.asp\?id_s=/', '/seller/'],
             ['&id=good', '/goods'],
             ['.asp?', ''],
-//            [/plati.ru\/itm\/(\d+)/) { "$platiUrl/products/" + Regexp.last_match[1]],
-            ['plati.ru/asp/', ''],
+            ["/itm\/(\d+)/gi", ''],
+            ["$platiUrl/asp/", ''],
         ];
         foreach ($replacements as $replacement) {
             $content = str_replace($replacement[0], $replacement[1], $content);
         }
+        $content = preg_replace('/\/itm\/(\d+)/i', '/products/$1', $content);
+        $content = preg_replace('/\/seller\/(\w+)\/(\w+)/i', '/seller/$2', $content);
         return $content;
     }
-    /*
-  def render_html(html)
-    html = HTMLEntities.new.decode(HTMLEntities.new.decode(html))
-    html = simple_format(html, {}, sanitize: false)
-    html = replace_links_to_plati(html)
-    html = Rinku.auto_link(html)
-    raw html
-  end
 
-  def replace_links_to_plati(html)
-    domain_name = APP_CONFIG['domain_name']
-    html.gsub('plati.com', 'plati.ru')
-        .gsub('plati.market', 'plati.ru')
-        .gsub('plati.io', 'plati.ru')
-        .gsub(/\w+.plati.ru\/asp\/list_seller.asp\?id_s=/, "#{domain_name}/seller/")
-        .gsub('plati.ru/asp/pay.asp?id_d=', "#{domain_name}/products/")
-        .gsub('www.', '')
-        .gsub('plati.ru/asp/pay.asp?idd=', "#{domain_name}/products/")
-        .gsub('plati.ru/asp/seller.asp?id_s=', "#{domain_name}/seller/")
-        .gsub(/plati.ru\/seller\/(\w+)\/(\w+)/){ "#{domain_name}/seller/" + Regexp.last_match[2] }
-        .gsub('&id=good', '/goods')
-        .gsub('.asp?', '')
-        .gsub('plati.ru/asp/', '')
-        .gsub(/plati.ru\/itm\/(\d+)/) { "#{domain_name}/products/" + Regexp.last_match[1]}
-        .gsub('plati.ru', domain_name)
-  end
-     * */
+    public function prepareDescription(string $content): string
+    {
+        $content = html_entity_decode(html_entity_decode($content));
+        $content = $this->replaceLinksToPlati($content);
+        $replacements = [
+            ["\n", '<br />'],
+            ['?', ''],
+        ];
+        foreach ($replacements as $replacement) {
+            $content = str_replace($replacement[0], $replacement[1], $content);
+        }
+        $content = autolink($content, null);
+        return $content;
+    }
 }

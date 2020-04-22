@@ -11,6 +11,8 @@
 |
 */
 
-Route::get('/', 'HomeController@index')->name('home');
-Route::get('products/{id}', 'ProductController@product');
-Route::get('buy-product', 'ProductController@buy');
+Route::name('home')->get('/', 'HomeController@index');
+Route::name('catalog')->get('sections', 'SectionsController@index');
+Route::name('category')->get('category/{id}', 'SectionsController@show');
+Route::name('product')->get('products/{id}', 'ProductController@product');
+Route::name('buy-product')->get('buy-product', 'ProductController@buy');

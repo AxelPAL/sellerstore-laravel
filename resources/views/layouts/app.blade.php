@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <title>@yield('title')</title>
-    <meta name="keywords" content="template language"/>
-    <meta name="author" content="author"/>
+    <title>{!! Meta::get('title') !!}</title>
+    @meta('description')
+    @meta('keywords')
     <meta name="language" content="ru"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     @include('layouts._favicon')
@@ -31,6 +31,7 @@
             @include('layouts/_sidebar')
         </div>
         <div class="content-zone col s12 m12 l9 white">
+            @yield('breadcrumbs')
             @yield('content')
         </div>
     </section>

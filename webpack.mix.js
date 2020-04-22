@@ -12,15 +12,16 @@ const mix = require('laravel-mix');
  */
 
 mix.sass('resources/sass/app.scss', 'public/css/dist');
-mix.copy('node_modules/swipebox/src/css/swipebox.min.css', 'public/css/dist');
 mix.styles([
-    'node_modules/bootstrap/dist/css/bootstrap.min.css',
     'node_modules/intro.js/minified/introjs.min.css',
-    'public/css/dist/*.css',
+    'public/css/dist/materialize.css',
+    'public/css/dist/slick.css',
+    'public/css/dist/slick-theme.css',
+    'node_modules/swipebox/src/css/swipebox.min.css',
+    'public/css/dist/app.css',
 ], 'public/css/app.css');
 mix.combine([
     'node_modules/jquery/dist/cdn/jquery-2.1.1.min.js',
-    'node_modules/bootstrap/dist/js/bootstrap.min.js',
     'node_modules/materialize-css/dist/js/materialize.min.js',
     'node_modules/jquery-sticky/jquery.sticky.js',
     'node_modules/tablesorter/dist/js/jquery.tablesorter.min.js',

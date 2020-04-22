@@ -3,6 +3,9 @@
   @if $media == handhelds {
     @media only screen and (max-width: $small) { @content; }
   }
+  @else if $media == handhelds-and-medium-screens {
+    @media only screen and (max-width: $large - 1) { @content; }
+  }
   @else if $media == medium-screens {
     @media only screen and (min-width: $small + 1) and (max-width: $large - 1) { @content; }
   }

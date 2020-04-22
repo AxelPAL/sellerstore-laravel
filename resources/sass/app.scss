@@ -5,8 +5,15 @@
 //@import "compass";
 @import "https://fonts.googleapis.com/icon?family=Material+Icons";
 
+@import "products.css.scss";
+@import "progress_bar";
+@import "search.css.scss";
+@import "sections.css.scss";
+@import "sellers.css.scss";
+
 body{
     color: black;
+    background-color: white;
     display: flex;
     min-height: 100vh;
     flex-direction: column;
@@ -45,6 +52,9 @@ header{
         li{
             display: block;
             width: 100%;
+        }
+        span.badge {
+            margin-top: -34px;
         }
     }
 }
@@ -86,6 +96,18 @@ header{
         .next, .last, .prev, .first {
             a {
 
+            }
+        }
+    }
+    nav {
+        @extend .deep-orange, .lighten-1;
+        @include respond-to(handhelds-and-medium-screens) {
+            line-height: 3em;
+            height: auto;
+            .nav-wrapper {
+                .col {
+                    float: none;
+                }
             }
         }
     }
@@ -240,13 +262,20 @@ footer{
     background: $color;
     color: white;
     box-shadow: 1px 1px 5px #8A8A8A;
+    @include respond-to(handhelds) {
+        margin: 10px 0;
+    }
 }
 
 attention{
-    @include spec-block(#1a237e); /**/
+    @include spec-block(#1a237e);
 }
 delivery{
-    @include spec-block(#FF9100); /*#FF9100*/
+    @include spec-block(#FF9100);
+    a {
+        @extend .grey-text, .text-darken-4;
+        text-shadow: 1px 1px 10px #989696;
+    }
 }
 
 .buy-button {
@@ -290,9 +319,3 @@ delivery{
         content: '₽';
     }
 }
-
-@import "products.css.scss";
-@import "progress_bar";
-@import "search.css.scss";
-@import "sections.css.scss";
-@import "sellers.css.scss";

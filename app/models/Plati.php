@@ -6,6 +6,7 @@ use Cache;
 use GuzzleHttp\Client;
 use PHPHtmlParser\Dom;
 use SimpleXMLElement;
+use Throwable;
 
 class Plati
 {
@@ -117,6 +118,21 @@ class Plati
                 return json_decode(json_encode((array)$content->folder), true);
             }
         );
+    }
+
+    /**
+     * @return string
+     * @throws Throwable
+     */
+    public function getStatistics(): string
+    {
+//        $result = Cache::remember('users', DAY_IN_SECONDS, function () {
+//            return $this->client->get($this->getPlatiBaseUrl());
+//        });
+//        $content = $result->getBody()->getContents();
+        //todo replace this mock with the line above
+        $content = view('statistics')->render();
+        return $content;
     }
 
     public function getProduct(int $id)
