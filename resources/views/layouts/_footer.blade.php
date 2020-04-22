@@ -38,4 +38,6 @@
             {{$item}}
         @endforeach
     @endif
+    {!! setting('site.yandex-metrics') !!}
+    {!! setting('site.google-analytics') !!}
 </footer>

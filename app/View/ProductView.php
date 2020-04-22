@@ -37,21 +37,21 @@ class ProductView
 
     public function replaceLinksToPlati(string $content): string
     {
-        $platiUrl = env('PLATI_BASE_DOMAIN');
+        $sellerstoreDomain = env('APP_URL_DOMAIN');
         $replacements = [
-            ['plati.com', $platiUrl],
-            ['plati.market', $platiUrl],
-            ['plati.io', $platiUrl],
-            ['plati.ru', $platiUrl],
-            ["$platiUrl/asp/pay.asp?id_d=", "$platiUrl/products/"],
+            ['plati.com', $sellerstoreDomain],
+            ['plati.market', $sellerstoreDomain],
+            ['plati.io', $sellerstoreDomain],
+            ['plati.ru', $sellerstoreDomain],
+            ["$sellerstoreDomain/asp/pay.asp?id_d=", "$sellerstoreDomain/products/"],
             ['www.', ''],
-            ["$platiUrl/asp/pay.asp?idd=", "$platiUrl/products/"],
-            ["$platiUrl/asp/seller.asp?id_s=", "$platiUrl/seller/"],
+            ["$sellerstoreDomain/asp/pay.asp?idd=", "$sellerstoreDomain/products/"],
+            ["$sellerstoreDomain/asp/seller.asp?id_s=", "$sellerstoreDomain/seller/"],
             ['/\/asp\/list_seller.asp\?id_s=/', '/seller/'],
             ['&id=good', '/goods'],
             ['.asp?', ''],
             ["/itm\/(\d+)/gi", ''],
-            ["$platiUrl/asp/", ''],
+            ["$sellerstoreDomain/asp/", ''],
         ];
         foreach ($replacements as $replacement) {
             $content = str_replace($replacement[0], $replacement[1], $content);

@@ -13,13 +13,13 @@ class Pages extends Migration
      */
     public function up()
     {
-        Schema::create('pages', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title');
-            $table->string('url');
-            $table->text('content');
-            $table->timestamps();
-        });
+//        Schema::create('pages', function (Blueprint $table) {
+//            $table->increments('id');
+//            $table->string('title');
+//            $table->string('url');
+//            $table->text('content');
+//            $table->timestamps();
+//        });
     }
 
     /**

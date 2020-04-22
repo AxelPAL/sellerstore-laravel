@@ -13,13 +13,13 @@ class Settings extends Migration
      */
     public function up()
     {
-        Schema::create('settings', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('title');
-            $table->string('code');
-            $table->text('content');
-            $table->timestamps();
-        });
+//        Schema::create('settings', function (Blueprint $table) {
+//            $table->increments('id');
+//            $table->string('title');
+//            $table->string('code');
+//            $table->text('content');
+//            $table->timestamps();
+//        });
     }
 
     /**
