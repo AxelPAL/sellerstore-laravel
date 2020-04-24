@@ -8,14 +8,15 @@ Breadcrumbs::for('home', function ($trail) {
 });
 
 // Home
-Breadcrumbs::for('catalog', function ($trail) {
+Breadcrumbs::for('catalog', function ($trail, $categoryTitle) {
     $trail->parent('home');
-    $trail->push('Каталог', route('catalog'));
+    $trail->push('Каталог', route('catalog', route('catalog')));
+    $trail->push($categoryTitle);
 });
 
 // Home > Blog > [Category] > [Post]
-Breadcrumbs::for('product', function ($trail, $productTitle, $sectionId, $sectionTitle) {
+Breadcrumbs::for('product', function ($trail, $productTitle, $categoryId, $categoryTitle) {
     $trail->parent('catalog');
-    $trail->push($sectionTitle, route('category', $sectionId));
+    $trail->push($categoryTitle, route('category', $categoryId));
     $trail->push($productTitle);
 });

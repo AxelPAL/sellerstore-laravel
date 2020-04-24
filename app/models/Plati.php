@@ -10,6 +10,8 @@ use Throwable;
 
 class Plati
 {
+    public const DEFAULT_RAWS_COUNT  = 100;
+    protected const DEFAULT_CURRENCY = 'RUR';
     /**
      * @var Client
      */
@@ -135,13 +137,35 @@ class Plati
         return $content;
     }
 
-    public function getProduct(int $id)
+    public function getProduct(int $id): SimpleXMLElement
     {
-        $sidebarData = [
+        $data = [
             'id_goods' => $id,
         ];
-        $xml = $this->prepareXml($sidebarData);
+        $xml = $this->prepareXml($data);
         return $this->getResponseFromPlati($xml, 'goods_info');
+    }
+
+    public function getSections(?int $id = 0): SimpleXMLElement
+    {
+        $data = [
+            'id_catalog' => $id,
+            'rows' => self::DEFAULT_RAWS_COUNT
+        ];
+        $xml = $this->prepareXml($data);
+        return $this->getResponseFromPlati($xml, 'sections');
+    }
+
+    public function getGoods(?int $id = null, int $page = 1): SimpleXMLElement
+    {
+        $data = [
+            'id_section' => $id,
+            'rows' => self::DEFAULT_RAWS_COUNT,
+            'currency' => self::DEFAULT_CURRENCY,
+            'page' => $page
+        ];
+        $xml = $this->prepareXml($data);
+        return $this->getResponseFromPlati($xml, 'goods');
     }
 
     public function getResponses(int $productId, int $sellerId, int $rows = 100): array

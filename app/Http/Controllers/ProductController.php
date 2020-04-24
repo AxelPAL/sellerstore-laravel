@@ -25,7 +25,7 @@ class ProductController extends Controller
         $productHelper = new ProductView();
         $title = $productHelper->prepareDescription($product->{'name_goods'});
         $keywords = 'купить ключ ' . $title;
-        Meta::set('title', "Купить $title");
+        Meta::set('title', "Купить $title" . ' | SellerStore.ru');
         Meta::set('description', "Купить $title");
         Meta::set('keywords', $keywords);
 

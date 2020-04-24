@@ -20453,14 +20453,22 @@ delivery a {
   text-align: center;
 }
 
+.content-zone {
+  padding-bottom: 2rem;
+}
+
 .price-sign:after {
   content: "\20BD";
 }
 
-.collection-item span.badge {
+.sidebar .collection-item span.badge {
   background-color: transparent;
   color: #f7f7f7;
   margin-top: 2% !important;
+}
+
+.section .collection-item span.badge {
+  margin-right: -21px;
 }
 
 .ruble:before {
