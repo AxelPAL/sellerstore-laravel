@@ -1,7 +1,7 @@
 @inject('helper', 'App\View\ProductView')
 @extends('layouts.app')
 @section('breadcrumbs')
-    {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render('catalog', $goods->name_section ?: '') }}
+    {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render('catalog', $goods->name_section ?: '', $id) }}
 @stop
 @section('content')
 @if (!empty($goods->name_section))
