@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\models\Plati;
-use App\Sale;
+use App\Models\Plati;
+use App\Models\Sale;
 use App\View\ProductView;
 use Illuminate\Http\Request;
 use Meta;
@@ -12,16 +12,12 @@ class ProductController extends Controller
 {
     public function product($id, Plati $plati)
     {
-        $q = '';
         $product = $plati->getProduct($id);
 
-        //transformations
-        $product->price = $product->price_goods->wmr;
+        /**transformations**/
+        $product->{'price'} = $product->{'price_goods'}->wmr;
+        /**transformations**/
 
-        //transformations
-
-        $sidebar = $plati->getSidebar();
-        $statistics = $plati->getStatistics();
         $productHelper = new ProductView();
         $title = $productHelper->prepareDescription($product->{'name_goods'});
         $keywords = 'купить ключ ' . $title;
@@ -31,7 +27,7 @@ class ProductController extends Controller
 
         $responses = $plati->getResponses($id, (int)$product->{'id_seller'});
 
-        return view('product', compact('product', 'sidebar', 'statistics', 'q', 'responses'));
+        return view('product', compact('product', 'responses'));
     }
 
     public function buy(Request $request)
@@ -50,7 +46,7 @@ class ProductController extends Controller
             "curr=WMR&failpage=$domain/products/$id&lang=ru-RU&nocash=973411");
     }
 
-    private function checkUserAgent(string $userAgent)
+    private function checkUserAgent(string $userAgent): bool
     {
         return strpos($userAgent, 'Googlebot') !== false
             || strpos($userAgent, 'YandexBot') !== false;

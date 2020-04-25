@@ -20457,6 +20457,10 @@ delivery a {
   padding-bottom: 2rem;
 }
 
+.content-zone .paginator-navigation .disabled {
+  display: none;
+}
+
 .price-sign:after {
   content: "\20BD";
 }

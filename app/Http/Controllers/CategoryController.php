@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\models\Plati;
+use App\Models\Paginator;
+use App\Models\Plati;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\Paginator;
 use Meta;
 
 class CategoryController extends Controller
@@ -27,19 +27,17 @@ class CategoryController extends Controller
             $categories[(string)$section->{'name_section'}] = $section;
         }
         ksort($categories);
-        $q = '';
-        $sidebar = $plati->getSidebar();
-        $statistics = $plati->getStatistics();
         $itemsCount = (int)$goods->{'cnt_goods'};
-        $paginator = new Paginator(range(0, $itemsCount), Plati::DEFAULT_RAWS_COUNT, $page);
+        $items = range(0, $itemsCount);
+        $paginator = new Paginator($items, $itemsCount, Plati::DEFAULT_RAWS_COUNT, $page);
         $paginator->setPath(route('category', ['id' => $id]));
 
-        $title = (string)$goods->{'name_section'} ?: '';
+        $title = (string)$goods->{'name_section'} ?: 'Каталог';
         Meta::set('title', $title . ' | SellerStore.ru');
         Meta::set('description', 'Интернет магазин цифровых товаров');
         Meta::set('keywords',
             implode(', ', ['продажа', 'цифровые', 'ключи', 'steam', 'steam-ключи', 'steam-игры', 'купить', 'ключ',]));
 
-        return view('sections.index', compact('sidebar', 'statistics', 'q', 'categories', 'goods', 'paginator', 'id'));
+        return view('sections.index', compact('categories', 'goods', 'paginator', 'id'));
     }
 }

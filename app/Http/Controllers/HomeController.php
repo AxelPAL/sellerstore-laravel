@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\models\HomePageItems;
+use App\Models\HomePageItems;
+use Meta;
 
 class HomeController extends Controller
 {
@@ -10,8 +11,12 @@ class HomeController extends Controller
     {
         $popularCategories = $homePageItems->getPopularCategories();
         $items = $homePageItems->parseHomeItems();
-        $q = '';
-        $sidebar = $homePageItems->getSidebar();
-        return view('home', compact('popularCategories', 'items', 'q', 'sidebar'));
+
+        Meta::set('title', 'Главная | SellerStore.ru');
+        Meta::set('description', 'SellerStore.ru - продажа цифровых товаров и ключей для игр с мгновенной выдачей');
+        Meta::set('keywords',
+            implode(', ', ['купить', 'игру', 'ключ', 'steam', 'steam-ключи', 'steam-игры']));
+
+        return view('home', compact('popularCategories', 'items'));
     }
 }

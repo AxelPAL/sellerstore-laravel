@@ -302,6 +302,11 @@ delivery{
 
 .content-zone {
     padding-bottom: 2rem;
+    .paginator-navigation {
+        .disabled {
+            display: none;
+        }
+    }
 }
 
 .price-sign {

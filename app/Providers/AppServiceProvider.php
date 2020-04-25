@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Plati;
+use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         //
     }
@@ -19,10 +21,17 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      *
+     * @param Plati $plati
+     * @param Request $request
      * @return void
      */
-    public function boot()
+    public function boot(Plati $plati, Request $request): void
     {
-        //
+        view()->composer('layouts.app', static function($view) use ($plati, $request)
+        {
+            $view->with('q', $request->get('q'));
+            $view->with('statistics', $plati->getStatistics());
+            $view->with('sidebar', $plati->getSidebar());
+        });
     }
 }
