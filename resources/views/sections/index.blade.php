@@ -75,6 +75,5 @@
         </table>
     @endif
     {{$paginator->links()}}
-    {{--<%= paginate @pages, default_per_page: 1, max_per_page: 1 %>--}}
     @stop
 </div>

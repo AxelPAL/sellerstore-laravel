@@ -25,7 +25,7 @@ class ProductController extends Controller
         Meta::set('description', "Купить $title");
         Meta::set('keywords', $keywords);
 
-        $responses = $plati->getResponses($id, (int)$product->{'id_seller'});
+        $responses = $plati->getResponses((int)$product->{'id_seller'}, $id);
 
         return view('product', compact('product', 'responses'));
     }

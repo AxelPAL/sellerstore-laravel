@@ -29,7 +29,7 @@ class CategoryController extends Controller
         ksort($categories);
         $itemsCount = (int)$goods->{'cnt_goods'};
         $items = range(0, $itemsCount);
-        $paginator = new Paginator($items, $itemsCount, Plati::DEFAULT_RAWS_COUNT, $page);
+        $paginator = new Paginator($items, $itemsCount, Plati::DEFAULT_ROWS_COUNT, $page);
         $paginator->setPath(route('category', ['id' => $id]));
 
         $title = (string)$goods->{'name_section'} ?: 'Каталог';

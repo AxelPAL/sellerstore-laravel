@@ -10,7 +10,7 @@ use Throwable;
 
 class Plati
 {
-    public const DEFAULT_RAWS_COUNT  = 100;
+    public const DEFAULT_ROWS_COUNT  = 100;
     protected const DEFAULT_CURRENCY = 'RUR';
     /**
      * @var Client
@@ -150,7 +150,7 @@ class Plati
     {
         $data = [
             'id_catalog' => $id,
-            'rows' => self::DEFAULT_RAWS_COUNT
+            'rows' => self::DEFAULT_ROWS_COUNT
         ];
         $xml = $this->prepareXml($data);
         return $this->getResponseFromPlati($xml, 'sections');
@@ -160,7 +160,7 @@ class Plati
     {
         $data = [
             'id_section' => $id,
-            'rows' => self::DEFAULT_RAWS_COUNT,
+            'rows' => self::DEFAULT_ROWS_COUNT,
             'currency' => self::DEFAULT_CURRENCY,
             'page' => $page
         ];
@@ -168,14 +168,24 @@ class Plati
         return $this->getResponseFromPlati($xml, 'goods');
     }
 
-    public function getResponses(int $productId, int $sellerId, int $rows = 100): array
+    public function getSellerInfo(?int $id = null): SimpleXMLElement
+    {
+        $data = [
+            'id_seller' => $id,
+        ];
+        $xml = $this->prepareXml($data);
+        return $this->getResponseFromPlati($xml, 'seller_info');
+    }
+
+    public function getResponses(int $sellerId, ?int $productId = null, int $rows = self::DEFAULT_ROWS_COUNT): array
     {
         $responses = [];
-        $xml = $this->prepareXml([
-            'id_goods' => $productId,
+        $requestData = [
+            'id_good' => (int)$productId,
             'id_seller' => $sellerId,
             'rows' => $rows
-        ]);
+        ];
+        $xml = $this->prepareXml($requestData);
         $result = $this->client->post($this->getPlatiBaseUrl() . '/xml/responses.asp', [
             'body' => $xml->asXML(),
             'headers' => [
@@ -187,6 +197,17 @@ class Plati
             $responses = ((array)$data->rows)['row'] ?? [];
         }
         return $responses;
+    }
+
+    public function getSellerGoods(?int $id = null): SimpleXMLElement
+    {
+        $data = [
+            'id_seller' => $id,
+            'rows' => self::DEFAULT_ROWS_COUNT,
+            'currency' => self::DEFAULT_CURRENCY,
+        ];
+        $xml = $this->prepareXml($data);
+        return $this->getResponseFromPlati($xml, 'seller_goods');
     }
 
     private function prepareXml(array $data): SimpleXMLElement

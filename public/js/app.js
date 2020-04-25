@@ -410,6 +410,27 @@ function init() {
         $(this).trigger('change');
     });
     $('.swipebox').swipebox();
+
+    if($(".load-goods").is('*')){
+        $.ajax({
+            url: window.location.href + "/goods",
+            success: function (data) {
+                $(".load-goods").html(data);
+                $(".goods-table").tablesorter({sortList: [[0]]});
+            }
+        });
+        $.ajax({
+            url: window.location.href + "/responses",
+            success: function (data) {
+                $(".load-responses").html(data);
+                var commentList = new List('comments-wrapper', {
+                    valueNames: ['comment'],
+                    page: 5,
+                    pagination: true
+                });
+            }
+        });
+    }
 }
 
 var getUrlParameter = function getUrlParameter(sParam) {
