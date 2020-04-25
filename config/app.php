@@ -171,10 +171,10 @@ return [
          */
         App\Providers\AppServiceProvider::class,
         App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Eusonlito\LaravelMeta\MetaServiceProvider::class
+        Eusonlito\LaravelMeta\MetaServiceProvider::class,
+        Sentry\Laravel\ServiceProvider::class,
 
     ],
 
@@ -227,6 +227,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Meta'    => Eusonlito\LaravelMeta\Facade::class,
+        'Sentry' => Sentry\Laravel\Facade::class,
     ],
 
 ];
