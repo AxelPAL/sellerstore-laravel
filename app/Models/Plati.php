@@ -11,6 +11,7 @@ use Throwable;
 class Plati
 {
     public const DEFAULT_ROWS_COUNT  = 100;
+    public const SEARCH_PAGE_SIZE    = 500;
     protected const DEFAULT_CURRENCY = 'RUR';
     /**
      * @var Client
@@ -177,6 +178,122 @@ class Plati
         return $this->getResponseFromPlati($xml, 'seller_info');
     }
 
+    public function getSearchData(string $q = null, int $page = 1): array
+    {
+        $query = $this->prepareSearchQuery($q);
+        $pageSize = self::SEARCH_PAGE_SIZE;
+        $result = $this->client->get($this->getPlatiBaseUrl()
+            . "/api/search.ashx?query=$query&pagesize=$pageSize&response=json&pagenum=$page", [
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+        $data = json_decode($result->getBody()->getContents(), true);
+        usort($data['items'], static function($item1, $item2){
+            return $item1['price_rur'] <=> $item2['price_rur'];
+        });
+        return $data;
+    }
+
+    public function getSearchPredictData(string $q = null): array
+    {
+        $result = $this->client->get($this->getPlatiBaseUrl()
+            . "/asp/ajax.asp?action=as&q=$q&limit=10&timestamp=" . time(),
+            [
+            'headers' => [
+                'Content-Type' => 'application/json'
+            ]
+        ]);
+        $result = $result->getBody()->getContents();
+        if (empty($result)) {
+            $q = $this->switchStringLanguage($q);
+            $result = $this->client->get($this->getPlatiBaseUrl()
+                . "/asp/ajax.asp?action=as&q=$q&limit=10&timestamp=" . time(),
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json'
+                    ]
+                ]);
+            $result = $result->getBody()->getContents();
+        }
+        if (empty($result)) {
+            $q = $this->switchStringLanguage($q, true);
+            $result = $this->client->get($this->getPlatiBaseUrl()
+                . "/asp/ajax.asp?action=as&q=$q&limit=10&timestamp=" . time(),
+                [
+                    'headers' => [
+                        'Content-Type' => 'application/json'
+                    ]
+                ]);
+            $result = $result->getBody()->getContents();
+        }
+        $words = [];
+        $wordsData = explode("\n", $result);
+        $wordsData = array_filter($wordsData);
+        foreach ($wordsData as $word) {
+            $index = mb_strpos($word, '|');
+            $wordString = mb_substr($word, 0, $index);
+            $wordLinkAddress = url(route('searchSlug', ['q' => $wordString]));
+            $wordLink = "<a href='$wordLinkAddress'>$wordString</a>";
+            $words[] = $wordLink;
+        }
+        return $words;
+    }
+
+    private function switchStringLanguage(string $string, bool $reverse = false)
+    {
+        $string = mb_strtolower($string);
+        $strReplace = [
+            'й' => 'q',
+            'ц' => 'w',
+            'у' => 'e',
+            'к' => 'r',
+            'е' => 't',
+            'н' => 'y',
+            'г' => 'u',
+            'ш' => 'i',
+            'щ' => 'o',
+            'з' => 'p',
+            'х' => '[',
+            'ъ' => ']',
+            'ф' => 'a',
+            'ы' => 's',
+            'в' => 'd',
+            'а' => 'f',
+            'п' => 'g',
+            'р' => 'h',
+            'о' => 'j',
+            'л' => 'k',
+            'д' => 'l',
+            'ж' => ';',
+            'э' => '\'',
+            'я' => 'z',
+            'ч' => 'x',
+            'с' => 'c',
+            'м' => 'v',
+            'и' => 'b',
+            'т' => 'n',
+            'ь' => 'm',
+            'б' => ',',
+            'ю' => '.'
+        ];
+        if ($reverse) {
+            $result = strtr($string, array_flip($strReplace));
+        } else {
+            $result = strtr($string, $strReplace);
+        }
+
+        return $result;
+    }
+
+    private function prepareSearchQuery(string $q): string
+    {
+        $replacementArray = [
+            '`' => "'"
+        ];
+        return urlencode(strtr($q, $replacementArray));
+    }
+
     public function getResponses(int $sellerId, ?int $productId = null, int $rows = self::DEFAULT_ROWS_COUNT): array
     {
         $responses = [];
@@ -193,8 +310,11 @@ class Plati
             ]
         ]);
         $data = simplexml_load_string($result->getBody()->getContents());
-        if (!empty($data) && !empty($data->rows->row)) {
+        if ($data !== null && !empty($data->rows->row)) {
             $responses = ((array)$data->rows)['row'] ?? [];
+        }
+        if (is_object($responses)) {
+            $responses = [$responses];
         }
         return $responses;
     }

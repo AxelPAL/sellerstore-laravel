@@ -27,7 +27,7 @@ class ProductController extends Controller
 
         $responses = $plati->getResponses((int)$product->{'id_seller'}, $id);
 
-        return view('product', compact('product', 'responses'));
+        return view('product.product', compact('product', 'responses'));
     }
 
     public function buy(Request $request)
