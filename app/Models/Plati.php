@@ -182,16 +182,21 @@ class Plati
     {
         $query = $this->prepareSearchQuery($q);
         $pageSize = self::SEARCH_PAGE_SIZE;
-        $result = $this->client->get($this->getPlatiBaseUrl()
-            . "/api/search.ashx?query=$query&pagesize=$pageSize&response=json&pagenum=$page", [
-            'headers' => [
-                'Content-Type' => 'application/json'
-            ]
-        ]);
-        $data = json_decode($result->getBody()->getContents(), true);
-        usort($data['items'], static function($item1, $item2){
-            return $item1['price_rur'] <=> $item2['price_rur'];
-        });
+        $data = [];
+        try {
+            $result = $this->client->get($this->getPlatiBaseUrl()
+                . "/api/search.ashx?query=$query&pagesize=$pageSize&response=json&pagenum=$page", [
+                'headers' => [
+                    'Content-Type' => 'application/json'
+                ]
+            ]);
+            $data = json_decode($result->getBody()->getContents(), true) ?: [];
+            usort($data['items'], static function($item1, $item2){
+                return $item1['price_rur'] <=> $item2['price_rur'];
+            });
+        } catch (Throwable $e) {
+
+        }
         return $data;
     }
 

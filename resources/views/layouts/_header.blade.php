@@ -9,7 +9,7 @@
             </a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 <li>
-                    <a href="/sections">Каталог</a>
+                    <a href="{{route('catalog')}}">Каталог</a>
                 </li>
                 <li>
                     <a href="/?tour=1">Тур по сайту</a>

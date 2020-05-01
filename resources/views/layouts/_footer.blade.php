@@ -18,7 +18,7 @@
                         <a href="/how-it-works">Как работает сервис</a>
                     </li>
                     <li>
-                        <a href="/sections">Каталог</a>
+                        <a href="{{route('catalog')}}">Каталог</a>
                     </li>
                     <li>
                         <a target="_blank" href="https://www.oplata.info/info/?lang=ru-RU">Мои покупки</a>

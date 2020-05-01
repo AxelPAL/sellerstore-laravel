@@ -40,9 +40,11 @@ class ProductView
         $sellerstoreDomain = env('APP_URL_DOMAIN');
         $replacements = [
             ['plati.com', $sellerstoreDomain],
+            ['PLATI.COM', $sellerstoreDomain],
             ['plati.market', $sellerstoreDomain],
             ['plati.io', $sellerstoreDomain],
             ['plati.ru', $sellerstoreDomain],
+            ['PLATI.RU', $sellerstoreDomain],
             ["$sellerstoreDomain/asp/pay.asp?id_d=", "$sellerstoreDomain/products/"],
             ['www.', ''],
             ["$sellerstoreDomain/asp/pay.asp?idd=", "$sellerstoreDomain/products/"],
