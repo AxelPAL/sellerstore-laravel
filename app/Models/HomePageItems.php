@@ -31,10 +31,10 @@ class HomePageItems
         $self = $this;
         return $this->cache::remember('home_items', now()->addHours(23), static function () use ($self) {
             $queryParams = [
-                'id' => 0,
+                'id'   => 0,
                 'lang' => 'ru-RU',
                 'curr' => 'RUR',
-                'rnd' => random_int(0, 10000),
+                'rnd'  => random_int(0, 10000),
             ];
             $id = 500;
             $items = [];
@@ -46,7 +46,7 @@ class HomePageItems
                 ]);
                 $dom = new Dom();
                 $content = $result->getBody()->getContents();
-                preg_match('/((\d+)\|\d+\|)<div>/i', $content, $matches);
+                preg_match('/((\d+)\|\d+\|)<div/i', $content, $matches);
                 if (!empty($matches[1])) {
                     $content = str_replace($matches[1], '', $content);
                 }
@@ -62,8 +62,8 @@ class HomePageItems
                     $name = $link->getChildren()[1]->text;
                     $price = $link->getChildren()[2]->text;
                     $item = [
-                        'id' => $itemId,
-                        'name' => $name,
+                        'id'    => $itemId,
+                        'name'  => $name,
                         'image' => "//graph.digiseller.ru/img.ashx?id_d=$itemId&w=120&crop=true",
                         'price' => (float)$price,
                     ];
@@ -95,44 +95,5 @@ class HomePageItems
                 return $categories;
             }
         );
-    }
-
-    public function getSidebar(): array
-    {
-        $self = $this;
-        return $this->cache::remember(
-            'sidebar',
-            now()->addHours(12),
-            static function () use ($self) {
-                $sidebarData = [
-                    'id_catalog' => 0,
-                    'rows' => 500
-                ];
-                $xml = $self->prepareXml($sidebarData);
-                $content = $self->getResponseFromPlati($xml, 'sections');
-                return json_decode(json_encode((array)$content->folder), true);
-            }
-        );
-    }
-
-    private function prepareXml(array $data): SimpleXMLElement
-    {
-        $xml = new SimpleXMLElement('<digiseller.request></digiseller.request>');
-        $xml->addChild('guid_agent', 'C1127FCB0AD845F9A95E51A25973CA3D');
-        foreach ($data as $key => $item) {
-            $xml->addChild($key, $item);
-        }
-        return $xml;
-    }
-
-    private function getResponseFromPlati(SimpleXMLElement $xml, string $pageName): SimpleXMLElement
-    {
-        $result = $this->client->post(self::PLATI_URL . "/xml/$pageName.asp", [
-            'body' => $xml->asXML(),
-            'headers' => [
-                'Content-Type' => 'text/xml'
-            ]
-        ]);
-        return simplexml_load_string($result->getBody()->getContents());
     }
 }
