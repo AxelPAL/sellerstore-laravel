@@ -107,7 +107,7 @@ class Plati
         return $this->getResponseFromPlati($xml, 'seller_info');
     }
 
-    public function getSearchData(string $q = null, int $page = 1): array
+    public function getSearchData(?string $q = null, int $page = 1): array
     {
         $query = $this->prepareSearchQuery($q);
         $pageSize = self::SEARCH_PAGE_SIZE;
@@ -220,7 +220,7 @@ class Plati
         return $result;
     }
 
-    private function prepareSearchQuery(string $q): string
+    private function prepareSearchQuery(?string $q): string
     {
         $replacementArray = [
             '`' => "'"

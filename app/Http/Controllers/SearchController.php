@@ -24,7 +24,9 @@ class SearchController extends Controller
         $itemsCount = $searchData['total'];
         $items = range(0, $itemsCount);
         $paginator = new Paginator($items, $itemsCount, Plati::SEARCH_PAGE_SIZE, $page);
-        $paginator->setPath(route('searchSlug', ['q' => $q]));
+        if (!empty($q)) {
+            $paginator->setPath(route('searchSlug', ['q' => $q]));
+        }
         Meta::set('title', 'Поиск ' . $q . ' | SellerStore.ru');
         Meta::set('description', 'SellerStore.ru - поиск цифровых товаров и ключей для игр с мгновенной выдачей');
         Meta::set('keywords', implode(', ', ['купить', 'игру', 'ключ', 'steam', 'steam-ключи', 'steam-игры']));

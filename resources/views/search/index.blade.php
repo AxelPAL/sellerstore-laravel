@@ -6,7 +6,7 @@
         <form action="/search" method="GET">
             <div class="input-field search-wrapper col s12 m6 l6">
                 <i class="material-icons prefix">search</i>
-                <input class="query" id="query" name="q" preloader="Поисковый запрос" type="search" value="{{$q}}"/>
+                <input class="query" id="query" name="q" required preloader="Поисковый запрос" type="search" value="{{$q}}"/>
                 <label class="active search-page-label" for="query">Поиск</label>
             </div>
             <div class="col s12 m6 l6 search-button-div">
@@ -16,7 +16,7 @@
             </div>
         </form>
     </div>
-    <div class="found-count">@if (!empty($q)) Найдено товаров: {{$searchData['total']}} @endif</div>
+    <div class="found-count">Найдено товаров: {{$searchData['total']}}</div>
     @if (!empty($searchData['items']))
         <table class="hoverable search-table">
             <thead>
