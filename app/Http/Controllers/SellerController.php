@@ -10,7 +10,7 @@ class SellerController extends Controller
     public function index(Plati $plati, int $id)
     {
         $sellerInfo = $plati->getSellerInfo($id);
-        Meta::set('title', 'Продавец' . $sellerInfo->{'name_seller'} . ' | SellerStore.ru');
+        Meta::set('title', 'Продавец ' . $sellerInfo->{'name_seller'} . ' | SellerStore.ru');
 
         return view('seller.index', compact('sellerInfo'));
     }
