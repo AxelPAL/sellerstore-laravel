@@ -13,8 +13,8 @@ Route::name('search')->get('search', 'SearchController@index');
 Route::name('searchSlug')->get('search/{q}', 'SearchController@index');
 Route::name('predictSearch')->get('search/predict/{q}', 'SearchController@predict');
 
-Route::get('{slug}', 'PageController@show');
-
 Route::group(['prefix' => 'admin'], static function () {
     Voyager::routes();
 });
+
+Route::get('{slug}', 'PageController@show');
