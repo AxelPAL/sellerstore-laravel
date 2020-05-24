@@ -282,6 +282,8 @@ class Plati
                 'Content-Type' => 'text/xml'
             ]
         ]);
-        return simplexml_load_string($result->getBody()->getContents());
+        $content = $result->getBody()->getContents();
+        $content = str_replace('&', '', $content);
+        return simplexml_load_string($content);
     }
 }
