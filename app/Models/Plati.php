@@ -283,7 +283,6 @@ class Plati
             ]
         ]);
         $content = $result->getBody()->getContents();
-        $content = str_replace('&', '', $content);
         return simplexml_load_string($content);
     }
 }
