@@ -76,7 +76,7 @@
                         </div>
                     @endif
                     <div class="card-action">
-                        @if ($product->available_goods > 0 )
+                        @if ($product->available_goods > 0 || (string)$product->available_goods === '')
                             <form method="GET" action="/buy-product">
                                 <input id="product-id" name="product" type="hidden" value="{{$product->id_goods}}"/>
                                 <button class="btn waves-effect waves-light" type="submit">
