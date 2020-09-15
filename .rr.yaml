@@ -1,0 +1,10 @@
+env:
+#APP_REFRESH: true
+
+http:
+  address: 0.0.0.0:8080
+  workers:
+    command: 'php7.4 ./vendor/bin/rr-worker'
+
+static:
+  dir: 'public'
