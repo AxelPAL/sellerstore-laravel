@@ -23,7 +23,6 @@ class Plati
 
     public function __construct(Client $client, Cache $cache)
     {
-
         $this->client = $client;
         $this->cache = $cache;
     }
@@ -59,7 +58,10 @@ class Plati
                 'curr' => 'RUR',
             ];
             $platiResponse = $this->client->get($this->getPlatiBaseUrl(), [
-                'query' => $queryParams
+                'query' => $queryParams,
+                'headers' => [
+                    'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+                ]
             ])->getBody()->getContents();
             $contentBegins = mb_strpos($platiResponse, '<div class="statistic">');
             $contentEnds = mb_strpos($platiResponse, '-->', $contentBegins);
@@ -116,7 +118,8 @@ class Plati
             $result = $this->client->get($this->getPlatiBaseUrl()
                 . "/api/search.ashx?query=$query&pagesize=$pageSize&response=json&pagenum=$page", [
                 'headers' => [
-                    'Content-Type' => 'application/json'
+                    'Content-Type' => 'application/json',
+                    'User-Agent' => env('USER_AGENT_FOR_PLATI'),
                 ]
             ]);
             $data = json_decode($result->getBody()->getContents(), true) ?: [];
@@ -135,7 +138,8 @@ class Plati
             . "/asp/ajax.asp?action=as&q=$q&limit=10&timestamp=" . time(),
             [
             'headers' => [
-                'Content-Type' => 'application/json'
+                'Content-Type' => 'application/json',
+                'User-Agent' => env('USER_AGENT_FOR_PLATI'),
             ]
         ]);
         $result = $result->getBody()->getContents();
@@ -145,7 +149,8 @@ class Plati
                 . "/asp/ajax.asp?action=as&q=$q&limit=10&timestamp=" . time(),
                 [
                     'headers' => [
-                        'Content-Type' => 'application/json'
+                        'Content-Type' => 'application/json',
+                        'User-Agent' => env('USER_AGENT_FOR_PLATI'),
                     ]
                 ]);
             $result = $result->getBody()->getContents();
@@ -156,7 +161,8 @@ class Plati
                 . "/asp/ajax.asp?action=as&q=$q&limit=10&timestamp=" . time(),
                 [
                     'headers' => [
-                        'Content-Type' => 'application/json'
+                        'Content-Type' => 'application/json',
+                        'User-Agent' => env('USER_AGENT_FOR_PLATI'),
                     ]
                 ]);
             $result = $result->getBody()->getContents();
@@ -240,7 +246,8 @@ class Plati
         $result = $this->client->post($this->getPlatiBaseUrl() . '/xml/responses.asp', [
             'body' => $xml->asXML(),
             'headers' => [
-                'Content-Type' => 'text/xml'
+                'Content-Type' => 'text/xml',
+                'User-Agent' => env('USER_AGENT_FOR_PLATI'),
             ]
         ]);
         $data = simplexml_load_string($result->getBody()->getContents());
@@ -279,7 +286,8 @@ class Plati
         $result = $this->client->post($this->getPlatiBaseUrl() . "/xml/$pageName.asp", [
             'body' => $xml->asXML(),
             'headers' => [
-                'Content-Type' => 'text/xml'
+                'Content-Type' => 'text/xml',
+                'User-Agent' => env('USER_AGENT_FOR_PLATI'),
             ]
         ]);
         $content = $result->getBody()->getContents();

@@ -5,11 +5,9 @@ namespace App\Models;
 use Cache;
 use GuzzleHttp\Client;
 use PHPHtmlParser\Dom;
-use SimpleXMLElement;
 
 class HomePageItems
 {
-    public const PLATI_URL = 'http://plati.io';
     /**
      * @var Client
      */
@@ -41,8 +39,11 @@ class HomePageItems
             while ($id > 0) {
                 $id = $id === -1 ? 0 : $id;
                 $queryParams['id'] = $id;
-                $result = $self->client->get(self::PLATI_URL . '/asp/items.asp', [
-                    'query' => $queryParams
+                $result = $self->client->get(env('PLATI_BASE_URL') . '/asp/items.asp', [
+                    'query' => $queryParams,
+                    'headers' => [
+                        'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+                    ]
                 ]);
                 $dom = new Dom();
                 $content = $result->getBody()->getContents();
@@ -84,7 +85,11 @@ class HomePageItems
             now()->addHours(12),
             static function () use ($self) {
                 $categories = [];
-                $result = $self->client->get('http://www.plati.com/api/top.ashx');
+                $result = $self->client->get('http://www.plati.com/api/top.ashx', [
+                    'headers' => [
+                        'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+                    ]
+                ]);
                 $content = $result->getBody()->getContents();
                 $xml = simplexml_load_string($content);
                 foreach ($xml->section as $section) {
