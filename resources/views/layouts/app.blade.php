@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     @include('layouts._favicon')
     <base href="/">
-    <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/app.css?v={{env('ASSETS_VERSION')}}">
     <link rel="search" type="application/opensearchdescription+xml" title="SellerStore.ru" href="/open-search.xml">
     <link rel="stylesheet" href="//fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto&subset=latin,cyrillic">
@@ -20,7 +20,7 @@
             enable_page_level_ads: true
         });
     </script>
-    <script type="text/javascript" src="/js/app.js"></script>
+    <script type="text/javascript" src="/js/app.js?v={{env('ASSETS_VERSION')}}"></script>
 </head>
 <body>
 <div class="background-image"></div>
