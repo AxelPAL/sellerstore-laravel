@@ -115,7 +115,7 @@
                                         <div class="comment-date">{{$response->date_response}}</div>
                                         <div class="comment-text">{{$response->text_response}}</div>
                                         @if (!empty($response->{'comment'}))
-                                            <div class="comment-response">Ответ продавца: {{$response->comment}}%>
+                                            <div class="comment-response">Ответ продавца: {{$response->comment}}
                                             </div>
                                         @endif
                                     </li>
