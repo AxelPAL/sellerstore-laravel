@@ -9,8 +9,8 @@ class HomeController extends Controller
 {
     public function index(HomePageItems $homePageItems)
     {
-        $popularCategories = $homePageItems->getPopularCategories();
-        $items = $homePageItems->parseHomeItems();
+        $popularCategories = $homePageItems->getPopularCategoriesFromCache();
+        $items = $homePageItems->getHomeItemsFromCache();
 
         Meta::set('title', 'Главная | SellerStore.ru');
         Meta::set('description', 'SellerStore.ru - продажа цифровых товаров и ключей для игр с мгновенной выдачей');
