@@ -6,6 +6,7 @@ parameters:
     level: 8
     excludePaths:
         - database/migrations
+        - database/seeds
         - tests
         - vendor
         - */*.blade.php

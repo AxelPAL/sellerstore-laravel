@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Paginator;
 use App\Models\Plati;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Log\Logger;
 use Meta;
@@ -12,7 +15,7 @@ class SearchController extends Controller
 {
     protected const DEFAULT_PAGE_VALUE = 1;
 
-    public function index(Plati $plati, Request $request, Logger $logger, ?string $q = null)
+    public function index(Plati $plati, Request $request, Logger $logger, ?string $q = null): View|Factory
     {
         $q = $request->get('q', $q);
         $page = $request->get('page', self::DEFAULT_PAGE_VALUE);
@@ -34,7 +37,7 @@ class SearchController extends Controller
         return view('search.index', compact('searchData', 'q', 'paginator'));
     }
 
-    public function predict(Plati $plati, Request $request, string $q)
+    public function predict(Plati $plati, Request $request, string $q): JsonResponse
     {
         $q = $request->get('q', $q);
         $productsData = $plati->getSearchPredictData($q);

@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Page;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 use Meta;
 
 class PageController extends Controller
 {
-    public function show(string $slug)
+    public function show(string $slug): View|Factory
     {
         $page = Page::where('slug', '=', $slug)->firstOrFail();
 

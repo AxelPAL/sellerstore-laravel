@@ -28,8 +28,7 @@ class Plati
     }
 
     /**
-     * @throws InvalidArgumentException
-     * @throws JsonException
+     * @throws JsonException|GuzzleException
      */
     public function getSidebar(): array
     {
@@ -45,7 +44,7 @@ class Plati
             512,
             JSON_THROW_ON_ERROR
         );
-        $this->cache::set(self::CACHE_SIDEBAR_KEY, $sidebarContent, now()->hours(12));
+        $this->cache::set(self::CACHE_SIDEBAR_KEY, $sidebarContent, now()->hours(12)); /* @phpstan-ignore-line */
 
         return $sidebarContent;
     }
@@ -55,7 +54,7 @@ class Plati
         $xml = new SimpleXMLElement('<digiseller.request></digiseller.request>');
         $xml->addChild('guid_agent', 'C1127FCB0AD845F9A95E51A25973CA3D');
         foreach ($data as $key => $item) {
-            $xml->addChild($key, $item);
+            $xml->addChild((string)$key, $item);
         }
         return $xml;
     }
@@ -76,7 +75,7 @@ class Plati
             ],
         ]);
         $content = $result->getBody()->getContents();
-        return simplexml_load_string($content);
+        return simplexml_load_string($content) ?: new SimpleXMLElement('');
     }
 
     public function getPlatiBaseUrl(): string
@@ -91,7 +90,6 @@ class Plati
 
     /**
      * @throws GuzzleException
-     * @throws InvalidArgumentException
      */
     public function getStatistics(): string
     {
@@ -106,9 +104,9 @@ class Plati
             ],
         ])->getBody()->getContents();
         $contentBegins = mb_strpos($platiResponse, '<div class="statistic">');
-        $contentEnds = mb_strpos($platiResponse, '-->', $contentBegins);
-        $statistics = mb_substr($platiResponse, $contentBegins, $contentEnds - $contentBegins);
-        $this->cache::set(self::CACHE_STATISTICS_KEY, $statistics, now()->days(1));
+        $contentEnds = mb_strpos($platiResponse, '-->', (int)$contentBegins);
+        $statistics = mb_substr($platiResponse, (int)$contentBegins, (int)($contentEnds - $contentBegins));
+        $this->cache::set(self::CACHE_STATISTICS_KEY, $statistics, now()->days(1)); /* @phpstan-ignore-line */
 
         return $statistics;
     }
@@ -181,7 +179,7 @@ class Plati
 
     public function getSearchData(?string $q = null, int $page = 1): array
     {
-        $query = $this->prepareSearchQuery($q);
+        $query = $this->prepareSearchQuery((string)$q);
         $pageSize = self::SEARCH_PAGE_SIZE;
         $data = [];
         try {
@@ -201,7 +199,7 @@ class Plati
         return $data;
     }
 
-    private function prepareSearchQuery(?string $q): string
+    private function prepareSearchQuery(string $q): string
     {
         $replacementArray = [
             '`' => "'",
@@ -227,7 +225,7 @@ class Plati
         );
         $result = $result->getBody()->getContents();
         if (empty($result)) {
-            $q = $this->switchStringLanguage($q);
+            $q = $this->switchStringLanguage((string)$q);
             $result = $this->client->get(
                 $this->getPlatiBaseUrl() . "/asp/ajax.asp?action=as&q=$q&limit=10&timestamp=" . time(),
                 [
@@ -240,7 +238,7 @@ class Plati
             $result = $result->getBody()->getContents();
         }
         if (empty($result)) {
-            $q = $this->switchStringLanguage($q, true);
+            $q = $this->switchStringLanguage((string)$q, true);
             $result = $this->client->get(
                 $this->getPlatiBaseUrl() . "/asp/ajax.asp?action=as&q=$q&limit=10&timestamp=" . time(),
                 [
@@ -257,7 +255,7 @@ class Plati
         $wordsData = array_filter($wordsData);
         foreach ($wordsData as $word) {
             $index = mb_strpos($word, '|');
-            $wordString = mb_substr($word, 0, $index);
+            $wordString = mb_substr($word, 0, (int)$index);
             $wordLinkAddress = url(route('searchSlug', ['q' => $wordString]));
             $wordLink = "<a href='$wordLinkAddress'>$wordString</a>";
             $words[] = $wordLink;
@@ -265,7 +263,7 @@ class Plati
         return $words;
     }
 
-    private function switchStringLanguage(string $string, bool $reverse = false)
+    private function switchStringLanguage(string $string, bool $reverse = false): string
     {
         $string = mb_strtolower($string);
         $strReplace = [
@@ -334,7 +332,7 @@ class Plati
             ]
         );
         $data = simplexml_load_string($result->getBody()->getContents());
-        if ($data !== null && !empty($data->rows->row)) {
+        if (!empty($data) && !empty($data->rows->row)) {
             $responses = ((array)$data->rows)['row'] ?? [];
         }
         if (is_object($responses)) {

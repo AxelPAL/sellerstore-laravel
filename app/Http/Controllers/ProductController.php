@@ -7,7 +7,12 @@ use App\Models\Sale;
 use App\Models\SaleDto;
 use App\Models\UserAgent;
 use App\View\ProductView;
+use GuzzleHttp\Exception\GuzzleException;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
 use Meta;
 
 class ProductController extends Controller
@@ -22,7 +27,10 @@ class ProductController extends Controller
         $this->userAgent = $userAgent;
     }
 
-    public function product($id, Plati $plati)
+    /**
+     * @throws GuzzleException
+     */
+    public function product(int $id, Plati $plati): View|Factory
     {
         $product = $plati->getProduct($id);
 
@@ -42,7 +50,7 @@ class ProductController extends Controller
         return view('product.product', compact('product', 'responses'));
     }
 
-    public function buy(Request $request)
+    public function buy(Request $request): Redirector|RedirectResponse
     {
         $id = (int)$request->input('product');
         $userAgent = $request->userAgent();
@@ -51,7 +59,7 @@ class ProductController extends Controller
         $saleDto->product = $id;
         $saleDto->ip = $request->ip();
         $saleDto->userAgent = $userAgent;
-        $saleDto->isBot = $this->userAgent->checkIsBot($userAgent);
+        $saleDto->isBot = $this->userAgent->checkIsBot((string)$userAgent);
         $sale->create($saleDto);
         $referralCode = env('REFERRAL_CODE');
         $domain = env('APP_URL');
