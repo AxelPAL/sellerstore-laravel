@@ -70,20 +70,33 @@ jobs:
           platforms: "linux/amd64,linux/arm64/v8,linux/arm/v7"
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
-      - name: Unit tests
-        uses: addnab/docker-run-action@v3
+#      - name: Unit tests
+#        uses: addnab/docker-run-action@v3
+#        with:
+#          registry: ghcr.io
+#          username: ${{ github.repository_owner }}
+#          password: ${{ secrets.PAT }}
+#          image: ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
+#          run: mv .env.test .env && ./artisan test
+#      - name: Static analysis
+#        uses: addnab/docker-run-action@v3
+#        with:
+#          registry: ghcr.io
+#          username: ${{ github.repository_owner }}
+#          password: ${{ secrets.PAT }}
+#          image: ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
+#          run: ./vendor/bin/phpstan analyse .
+      -
+        name: Login to GitHub Container Registry
+        uses: docker/login-action@v1
         with:
+          registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-          image: ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
+      - uses: kohlerdominik/docker-run-action@v1
+        with:
+          image: ghcr.io/${{ github.repository }}/sellerstore-app:latest
           run: mv .env.test .env && ./artisan test
-      - name: Static analysis
-        uses: addnab/docker-run-action@v3
-        with:
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-          image: ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
-          run: ./vendor/bin/phpstan analyse .
 
   build-nginx:
     runs-on: ubuntu-latest
