@@ -1,0 +1,15 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+parameters:
+    paths:
+        - app
+    level: 8
+    excludePaths:
+        - database/migrations
+        - tests
+        - vendor
+        - */*.blade.php
+        - storage
+        - _ide_helper.php
+        - routes/console.php
+    checkMissingIterableValueType: false

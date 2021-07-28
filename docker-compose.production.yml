@@ -1,0 +1,35 @@
+version: "3.3"
+services:
+  app:
+    image: axelpal/sellerstore-app:${IMAGE_TAG:-local}
+    tty: true
+    entrypoint: /wait-for mysql:5432 -t 60 -- /app-entrypoint.sh
+    command: php-fpm -R -F
+    environment:
+      STARTUP_START_SUPERVISORD: "true"
+      STARTUP_START_CONSUMERS: "true"
+      STARTUP_START_CRON: "true"
+      DEFAULT_WORKERS_COUNT: 2
+    extra_hosts:
+      - "mysql:172.17.0.1"
+      - "redis:172.17.0.1"
+    volumes:
+      - .:/app:delegated
+      - ./docker/php/app-entrypoint.sh:/app-entrypoint.sh
+      - phpstan_data:/tmp/phpstan:delegated
+
+  nginx:
+    image: axelpal/sellerstore-nginx:${IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+      args:
+        APP_IMAGE: axelpal/sellerstore-app:${IMAGE_TAG:-local}
+    tty: true
+    volumes:
+      - ./public:/app/public:delegated
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/includes:/etc/nginx/includes
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app

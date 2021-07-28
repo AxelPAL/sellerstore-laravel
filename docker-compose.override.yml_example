@@ -1,0 +1,6 @@
+version: "3.3"
+services:
+  app:
+    extra_hosts:
+      - "mysql:172.17.0.1"
+      - "redis:172.17.0.1"

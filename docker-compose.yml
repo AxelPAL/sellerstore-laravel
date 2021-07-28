@@ -1,0 +1,78 @@
+version: "3.3"
+services:
+  app:
+    image: axelpal/sellerstore-app:${IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    tty: true
+    entrypoint: /wait-for mysql:5432 -t 60 -- /app-entrypoint.sh
+    command: php-fpm -R -F
+    env_file: .env
+    environment:
+      XDEBUG_CONFIG: ${XDEBUG_CONFIG}
+      PHP_IDE_CONFIG: "serverName=sellerstore-laravel"
+      STARTUP_START_SUPERVISORD: "true"
+      STARTUP_START_CONSUMERS: "true"
+      STARTUP_START_CRON: "true"
+      DEFAULT_WORKERS_COUNT: 2
+    networks:
+      app_net:
+    volumes:
+      - .:/app:delegated
+      - ./docker/php/app-entrypoint.sh:/app-entrypoint.sh
+      - phpstan_data:/tmp/phpstan:delegated
+
+  nginx:
+    image: axelpal/sellerstore-nginx:${IMAGE_TAG:-local}
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+      args:
+        APP_IMAGE: axelpal/sellerstore-app:${IMAGE_TAG:-local}
+    tty: true
+    ports:
+      - ${NGINX_PORT}:80
+      - ${NGINX_SECURE_PORT}:80
+    networks:
+      app_net:
+
+    volumes:
+      - ./public:/app/public:delegated
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/includes:/etc/nginx/includes
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+  redis:
+    image: redis
+    tty: true
+    profiles:
+      - db
+    volumes:
+      - redis_data:/data:delegated
+    networks:
+      app_net:
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    tty: true
+    profiles:
+      - db
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+    networks:
+      app_net:
+    volumes:
+      - mysql_data:/var/lib/mysql:delegated
+
+volumes:
+  mysql_data:
+  redis_data:
+  phpstan_data:
+
+networks:
+  app_net:
+    driver: bridge
+    driver_opts:
+      com.docker.network.enable_ipv6: "false"
