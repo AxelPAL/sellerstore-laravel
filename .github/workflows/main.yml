@@ -67,7 +67,7 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           file: ./docker/php/Dockerfile
-          platforms: "linux/amd64,linux/arm64/v8,linux/arm/v7"
+#          platforms: "linux/amd64,linux/arm64/v8,linux/arm/v7"
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new
 #      - name: Unit tests
@@ -95,8 +95,8 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - uses: kohlerdominik/docker-run-action@v1
         with:
-          image: ghcr.io/${{ github.repository }}/sellerstore-app:latest
-          run: mv .env.test .env && ./artisan test
+          image: ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
+          run: mv .env.test .env && php ./artisan test
 
   build-nginx:
     runs-on: ubuntu-latest
