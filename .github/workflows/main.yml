@@ -81,7 +81,7 @@ jobs:
         uses: kohlerdominik/docker-run-action@v1
         with:
           image: ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
-          run: cp .env.testing .env && php artisan key:generate --env=testing --force && ./artisan key:generate --force && ./artisan test
+          run: cp .env.testing .env && ./artisan config:clear && php artisan key:generate --env=testing --force && ./artisan key:generate --force && ./artisan test
       - name: Static analysis
         uses: kohlerdominik/docker-run-action@v1
         with:
