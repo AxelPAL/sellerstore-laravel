@@ -80,7 +80,7 @@ jobs:
       - uses: kohlerdominik/docker-run-action@v1
         with:
           image: ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
-          run: php ./artisan test
+          run: cp .env.testing .env && php artisan key:generate --env=testing && php artisan key:generate && php ./artisan test
       - name: Unit tests
         uses: addnab/docker-run-action@v3
         with:
