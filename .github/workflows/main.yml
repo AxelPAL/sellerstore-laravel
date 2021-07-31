@@ -18,8 +18,6 @@ on:
 jobs:
   build-app:
     runs-on: ubuntu-latest
-    env:
-      IMAGE_TAG: ${{ env.GITHUB_REF_SLUG }}
     steps:
       -
         name: Checkout
