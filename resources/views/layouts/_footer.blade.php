@@ -38,6 +38,8 @@
             {{$item}}
         @endforeach
     @endif
-    {!! setting('site.yandex-metrics') !!}
-    {!! setting('site.google-analytics') !!}
+    @if (app()->environment() !== 'testing')
+        {!! setting('site.yandex-metrics') !!}
+        {!! setting('site.google-analytics') !!}
+    @endif
 </footer>
