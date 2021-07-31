@@ -70,7 +70,9 @@ jobs:
 #          platforms: "linux/amd64,linux/arm64/v8,linux/arm/v7"
 #          cache-from: type=local,src=/tmp/.buildx-cache
 #          cache-to: type=local,dest=/tmp/.buildx-cache-new
-      - uses: actions/checkout@v1
+
+#      - uses: actions/checkout@v1
+
       - name: Build the docker-compose stack
         env:
           IMAGE_TAG: ${{ env.GITHUB_REF_SLUG }}
