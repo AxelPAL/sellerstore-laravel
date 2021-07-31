@@ -74,8 +74,6 @@ jobs:
 #      - uses: actions/checkout@v1
 
       - name: Build the docker-compose stack
-        env:
-          IMAGE_TAG: ${{ env.GITHUB_REF_SLUG }}
         run: docker-compose -f docker-compose.ci.yml up -d app
       - name: Prepare DB
         run: ./docker/mysql/db-prepare.sh
