@@ -80,7 +80,7 @@ jobs:
       - uses: kohlerdominik/docker-run-action@v1
         with:
           image: ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
-          run: cp .env.example .env && php artisan key:generate --env=testing && php ./artisan test
+          run: php ./artisan test
       - name: Unit tests
         uses: addnab/docker-run-action@v3
         with:
@@ -88,7 +88,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.PAT }}
           image: ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
-          run: cp .env.example .env && php artisan key:generate --env=testing && php ./artisan test
+          run: php ./artisan test
       - name: Static analysis
         uses: addnab/docker-run-action@v3
         with:
