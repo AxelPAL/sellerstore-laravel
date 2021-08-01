@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   app:
-    image: ghcr.io/axelpal/sellerstore-app:${IMAGE_TAG:-local}
+    image: ghcr.io/axelpal/sellerstore-app:${IMAGE_TAG:-latest}
     tty: true
     entrypoint: /wait-for mysql:5432 -t 60 -- /app-entrypoint.sh
     command: php-fpm -R -F
@@ -18,8 +18,11 @@ services:
       - ./docker/php/app-entrypoint.sh:/app-entrypoint.sh
 
   nginx:
-    image: ghcr.io/axelpal/sellerstore-nginx:${IMAGE_TAG:-local}
+    image: ghcr.io/axelpal/sellerstore-nginx:${IMAGE_TAG:-latest}
     tty: true
+    ports:
+      - ${NGINX_PORT}:80
+      - ${NGINX_SECURE_PORT}:80
     volumes:
       - ./public:/app/public:delegated
       - ./docker/nginx/conf.d:/etc/nginx/conf.d
