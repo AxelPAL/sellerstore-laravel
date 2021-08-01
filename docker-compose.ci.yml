@@ -1,0 +1,36 @@
+version: "3.3"
+services:
+  tests:
+    image: ghcr.io/axelpal/sellerstore-app:${GITHUB_REF_SLUG:-local}
+    tty: true
+    entrypoint: ""
+    command: ./artisan test
+    depends_on:
+      - mysql
+      - redis
+  phpstan:
+    image: ghcr.io/axelpal/sellerstore-app:${GITHUB_REF_SLUG:-local}
+    tty: true
+    entrypoint: ""
+    command: ./vendor/bin/phpstan analyse .
+    depends_on:
+      - mysql
+      - redis
+  app:
+    image: ghcr.io/axelpal/sellerstore-app:${GITHUB_REF_SLUG:-local}
+    tty: true
+    entrypoint: /wait-for mysql:3306 -t 60 -- /app-entrypoint.sh
+    depends_on:
+      - mysql
+      - redis
+  nginx:
+    image: ghcr.io/axelpal/sellerstore-nginx:${GITHUB_REF_SLUG:-local}
+    depends_on:
+      - app
+  redis:
+    image: redis
+  mysql:
+    image: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1

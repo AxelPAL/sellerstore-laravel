@@ -3,22 +3,23 @@
 namespace App\Models;
 
 use Cache;
+use Exception;
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\GuzzleException;
 use PHPHtmlParser\Dom;
+use PHPHtmlParser\Exceptions\ChildNotFoundException;
+use PHPHtmlParser\Exceptions\CircularException;
+use PHPHtmlParser\Exceptions\CurlException;
+use PHPHtmlParser\Exceptions\NotLoadedException;
+use PHPHtmlParser\Exceptions\StrictException;
 
 class HomePageItems
 {
     protected const HOME_ITEMS_CACHE_KEY = 'home_items';
     protected const POPULAR_CATEGORIES_CACHE_KEY = 'popular_categories';
 
-    /**
-     * @var Client
-     */
-    private $client;
-    /**
-     * @var Cache
-     */
-    private $cache;
+    private Client $client;
+    private Cache $cache;
 
     public function __construct(Client $client, Cache $cache)
     {
@@ -26,6 +27,16 @@ class HomePageItems
         $this->cache = $cache;
     }
 
+    /**
+     * @return array
+     * @throws GuzzleException
+     * @throws ChildNotFoundException
+     * @throws CircularException
+     * @throws CurlException
+     * @throws NotLoadedException
+     * @throws StrictException
+     * @throws Exception
+     */
     public function parseHomeItems(): array
     {
         $queryParams = [
@@ -37,14 +48,17 @@ class HomePageItems
         $id = 500;
         $items = [];
         while ($id > 0) {
-            $id = $id === -1 ? 0 : $id;
+            $id = $id === -1 ? 0 : $id; /* @phpstan-ignore-line */
             $queryParams['id'] = $id;
-            $result = $this->client->get(env('PLATI_BASE_URL') . '/asp/items.asp', [
-                'query' => $queryParams,
-                'headers' => [
-                    'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+            $result = $this->client->get(
+                env('PLATI_BASE_URL') . '/asp/items.asp',
+                [
+                    'query'   => $queryParams,
+                    'headers' => [
+                        'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+                    ],
                 ]
-            ]);
+            );
             $dom = new Dom();
             $content = $result->getBody()->getContents();
             preg_match('/((\d+)\|\d+\|)<div/i', $content, $matches);
@@ -70,29 +84,37 @@ class HomePageItems
                 ];
                 $items[] = $item;
             }
-            $id = $matches[2] ?? 0;
+            $id = isset($matches[2]) ? (int)$matches[2] : 0;
         }
-        $this->cache::set(self::HOME_ITEMS_CACHE_KEY, $items, now()->addHours(23));
+        $this->cache::set(self::HOME_ITEMS_CACHE_KEY, $items, now()->addHours(23)); /* @phpstan-ignore-line */
         return $items;
-
     }
 
+    /**
+     * @return array
+     * @throws GuzzleException
+     */
     public function parsePopularCategories(): array
     {
-        $self = $this;
         $categories = [];
-        $result = $self->client->get('http://www.plati.com/api/top.ashx', [
-            'headers' => [
-                'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+        $result = $this->client->get(
+            env('PLATI_BASE_URL') . '/api/top.ashx',
+            [
+                'headers' => [
+                    'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+                ],
             ]
-        ]);
+        );
         $content = $result->getBody()->getContents();
         $xml = simplexml_load_string($content);
-        foreach ($xml->section as $section) {
-            $name = (string)$section->name;
-            $id = (string)$section->attributes()->id;
-            $categories[] = compact('id', 'name');
+        if ($xml) {
+            foreach ($xml->section as $section) {
+                $name = (string)$section->name;
+                $id = (string)$section->attributes()->id;
+                $categories[] = compact('id', 'name');
+            }
         }
+        /** @phpstan-ignore-next-line */
         $this->cache::set(self::POPULAR_CATEGORIES_CACHE_KEY, $categories, now()->addHours(12));
         return $categories;
     }

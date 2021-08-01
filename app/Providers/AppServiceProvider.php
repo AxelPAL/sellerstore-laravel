@@ -27,11 +27,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Plati $plati, Request $request): void
     {
-        view()->composer('layouts.app', static function($view) use ($plati, $request)
-        {
+        view()->composer('layouts.app', static function ($view) use ($plati, $request) {
             $view->with('q', $request->get('q'));
-            $view->with('statistics', $plati->getStatistics());
-            $view->with('sidebar', $plati->getSidebar());
+            $view->with('statistics', $plati->getStatisticsFromCache());
+            $view->with('sidebar', $plati->getSidebarFromCache());
         });
     }
 }

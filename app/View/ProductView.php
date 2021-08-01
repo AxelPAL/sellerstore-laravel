@@ -7,10 +7,10 @@ use SimpleXMLElement;
 
 class ProductView
 {
-    public function calculateGoodResponsesPercent(SimpleXMLElement $product)
+    public function calculateGoodResponsesPercent(SimpleXMLElement $product): float|int
     {
-        $goodResponses = $product->statistics->cnt_goodresponses;
-        $badResponses = $product->statistics->cnt_badresponses;
+        $goodResponses = (float)($product->statistics->cnt_goodresponses);
+        $badResponses = (float)($product->statistics->cnt_badresponses);
         $percent = 0;
         if (($goodResponses + $badResponses) > 0) {
             $percent = $goodResponses / ($goodResponses + $badResponses) * 100;
@@ -21,10 +21,10 @@ class ProductView
         return $percent;
     }
 
-    public function calculateBadResponsesPercent(SimpleXMLElement $product)
+    public function calculateBadResponsesPercent(SimpleXMLElement $product): float|int
     {
-        $goodResponses = $product->statistics->cnt_goodresponses;
-        $badResponses = $product->statistics->cnt_badresponses;
+        $goodResponses = (float)($product->statistics->cnt_goodresponses);
+        $badResponses = (float)($product->statistics->cnt_badresponses);
         $percent = 0;
         if (($goodResponses + $badResponses) > 0) {
             $percent = $badResponses / ($goodResponses + $badResponses) * 100;
@@ -58,9 +58,9 @@ class ProductView
         foreach ($replacements as $replacement) {
             $content = str_replace($replacement[0], $replacement[1], $content);
         }
-        $content = preg_replace('/\/itm\/(\d+)/i', '/products/$1', $content);
-        $content = preg_replace('/\/seller\/(\w+)\/(\w+)/i', '/seller/$2', $content);
-        return $content;
+        $content = preg_replace('/\/itm\/(\d+)/i', '/products/$1', (string)$content);
+        $content = preg_replace('/\/seller\/(\w+)\/(\w+)/i', '/seller/$2', (string)$content);
+        return (string)$content;
     }
 
     public function prepareDescription(string $content): string
