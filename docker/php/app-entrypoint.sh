@@ -30,7 +30,9 @@ if [ "${STARTUP_START_CONSUMERS}" = "true" ]; then
     echo "[INFO] consumers processes successfully started";
 fi;
 
-cd "${APP_DIR}" && php artisan optimize
+cd "${APP_DIR}" && ./artisan optimize;
+./artisan app:parse-si; ./artisan app:parse-st; ./artisan app:parse-ho
+./artisan responsecache:clear
 touch "/${APP_DIR}/storage/preload.php"
 
 exec "$@";
