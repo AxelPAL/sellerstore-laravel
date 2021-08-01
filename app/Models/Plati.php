@@ -6,7 +6,6 @@ use Cache;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
-use Psr\SimpleCache\InvalidArgumentException;
 use SimpleXMLElement;
 use Throwable;
 
@@ -44,7 +43,7 @@ class Plati
             512,
             JSON_THROW_ON_ERROR
         );
-        $this->cache::set(self::CACHE_SIDEBAR_KEY, $sidebarContent, now()->hours(12)); /* @phpstan-ignore-line */
+        $this->cache::set(self::CACHE_SIDEBAR_KEY, $sidebarContent); /* @phpstan-ignore-line */
 
         return $sidebarContent;
     }
@@ -106,7 +105,7 @@ class Plati
         $contentBegins = mb_strpos($platiResponse, '<div class="statistic">');
         $contentEnds = mb_strpos($platiResponse, '-->', (int)$contentBegins);
         $statistics = mb_substr($platiResponse, (int)$contentBegins, (int)($contentEnds - $contentBegins));
-        $this->cache::set(self::CACHE_STATISTICS_KEY, $statistics, now()->days(1)); /* @phpstan-ignore-line */
+        $this->cache::set(self::CACHE_STATISTICS_KEY, $statistics); /* @phpstan-ignore-line */
 
         return $statistics;
     }

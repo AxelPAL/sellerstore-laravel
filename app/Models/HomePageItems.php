@@ -86,7 +86,7 @@ class HomePageItems
             }
             $id = isset($matches[2]) ? (int)$matches[2] : 0;
         }
-        $this->cache::set(self::HOME_ITEMS_CACHE_KEY, $items, now()->addHours(23)); /* @phpstan-ignore-line */
+        $this->cache::set(self::HOME_ITEMS_CACHE_KEY, $items); /* @phpstan-ignore-line */
         return $items;
     }
 
@@ -115,7 +115,7 @@ class HomePageItems
             }
         }
         /** @phpstan-ignore-next-line */
-        $this->cache::set(self::POPULAR_CATEGORIES_CACHE_KEY, $categories, now()->addHours(12));
+        $this->cache::set(self::POPULAR_CATEGORIES_CACHE_KEY, $categories);
         return $categories;
     }
 
