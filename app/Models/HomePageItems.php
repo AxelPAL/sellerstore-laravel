@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Cache;
+use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use PHPHtmlParser\Dom;
@@ -11,7 +12,6 @@ use PHPHtmlParser\Exceptions\CircularException;
 use PHPHtmlParser\Exceptions\CurlException;
 use PHPHtmlParser\Exceptions\NotLoadedException;
 use PHPHtmlParser\Exceptions\StrictException;
-use Psr\SimpleCache\InvalidArgumentException;
 
 class HomePageItems
 {
@@ -35,6 +35,7 @@ class HomePageItems
      * @throws CurlException
      * @throws NotLoadedException
      * @throws StrictException
+     * @throws Exception
      */
     public function parseHomeItems(): array
     {
@@ -95,10 +96,9 @@ class HomePageItems
      */
     public function parsePopularCategories(): array
     {
-        $self = $this;
         $categories = [];
-        $result = $self->client->get(
-            'http://www.plati.com/api/top.ashx',
+        $result = $this->client->get(
+            env('PLATI_BASE_URL') . '/api/top.ashx',
             [
                 'headers' => [
                     'User-Agent' => env('USER_AGENT_FOR_PLATI'),
