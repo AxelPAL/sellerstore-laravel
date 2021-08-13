@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\Plati;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
+use URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -27,6 +28,10 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(Plati $plati, Request $request): void
     {
+        if ( env('APP_ENV') === 'production' ) {
+            URL::forceRootUrl(env('APP_URL'));
+            URL::forceScheme('https');
+        }
         view()->composer('layouts.app', static function ($view) use ($plati, $request) {
             $view->with('q', $request->get('q'));
             $view->with('statistics', $plati->getStatisticsFromCache());
