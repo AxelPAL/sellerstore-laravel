@@ -1,17 +1,15 @@
 name: Deploy
 
 on:
-  push:
-    branches: [master, deploy]
   workflow_run:
-    workflows: ["CI"]
+    workflows: ["CI", "main"]
     branches: [master, deploy]
     types:
       - completed
 
 jobs:
   build:
-#    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
       - name: deploy to host
