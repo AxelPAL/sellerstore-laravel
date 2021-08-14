@@ -1,0 +1,23 @@
+name: Deploy
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    branches: [master, deploy]
+    types:
+      - completed
+
+jobs:
+  build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: deploy to host
+        uses: cross-the-world/ssh-pipeline@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USER }}
+          key:  ${{ secrets.SSH_KEY }}
+          script: |
+            cd /var/www/sellerstore-laravel
+            docker-compose up --quiet-pull -d
