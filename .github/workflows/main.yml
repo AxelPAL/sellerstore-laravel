@@ -60,8 +60,6 @@ jobs:
 
       - name: Running app with services
         run: docker-compose -f docker-compose.ci.yml up -d app
-      - name: Docker ps
-        run: docker ps
       - name: Prepare DB
         run: ./docker/mysql/db-prepare.sh
       - name: Unit tests
