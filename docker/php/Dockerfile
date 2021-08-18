@@ -34,7 +34,7 @@ RUN chmod +x /app-entrypoint.sh
 
 COPY . /app
 WORKDIR /app
-RUN mkdir storage/framework/cache/data
+RUN mkdir -p storage/framework/cache/data
 RUN composer install && rm -rf ~/.composer/cache/
 RUN npm i
 

@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   tests:
-    image: ghcr.io/axelpal/sellerstore-app:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel/app:${GITHUB_REF_SLUG:-local}
     tty: true
     entrypoint: ""
     command: ./artisan test
@@ -9,7 +9,7 @@ services:
       - mysql
       - redis
   phpstan:
-    image: ghcr.io/axelpal/sellerstore-app:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel/app:${GITHUB_REF_SLUG:-local}
     tty: true
     entrypoint: ""
     command: ./vendor/bin/phpstan analyse .
@@ -17,14 +17,14 @@ services:
       - mysql
       - redis
   app:
-    image: ghcr.io/axelpal/sellerstore-app:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel/app:${GITHUB_REF_SLUG:-local}
     tty: true
     entrypoint: /wait-for mysql:3306 -t 60 -- /app-entrypoint.sh
     depends_on:
       - mysql
       - redis
   nginx:
-    image: ghcr.io/axelpal/sellerstore-nginx:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel/nginx:${GITHUB_REF_SLUG:-local}
     depends_on:
       - app
   redis:

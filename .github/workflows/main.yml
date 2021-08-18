@@ -26,7 +26,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/axelpal/sellerstore-app
+            ghcr.io/axelpal/sellerstore-laravel/app
           flavor: |
             latest=true
           tags: |
@@ -86,7 +86,7 @@ jobs:
         uses: docker/metadata-action@v3
         with:
           images: |
-            ghcr.io/axelpal/sellerstore-nginx
+            ghcr.io/axelpal/sellerstore-laravel/nginx
           flavor: |
             latest=true
           tags: |
@@ -120,4 +120,4 @@ jobs:
           file: ./docker/nginx/Dockerfile
           platforms: "linux/amd64,linux/arm64/v8,linux/arm/v7"
           build-args: |
-            APP_IMAGE=ghcr.io/axelpal/sellerstore-app:${{ env.GITHUB_REF_SLUG }}
+            APP_IMAGE=ghcr.io/axelpal/sellerstore-laravel/app:${{ env.GITHUB_REF_SLUG }}
