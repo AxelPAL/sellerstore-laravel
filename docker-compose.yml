@@ -1,7 +1,7 @@
 version: "3.3"
 services:
   app:
-    image: ghcr.io/axelpal/sellerstore-laravel/app:${IMAGE_TAG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-app:${IMAGE_TAG:-local}
     build:
       context: .
       dockerfile: ./docker/php/Dockerfile
@@ -24,12 +24,12 @@ services:
       - phpstan_data:/tmp/phpstan:delegated
 
   nginx:
-    image: ghcr.io/axelpal/sellerstore-laravel/nginx:${IMAGE_TAG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-nginx:${IMAGE_TAG:-local}
     build:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
       args:
-        APP_IMAGE: ghcr.io/axelpal/sellerstore-laravel/app:${IMAGE_TAG:-local}
+        APP_IMAGE: ghcr.io/axelpal/sellerstore-laravel-app:${IMAGE_TAG:-local}
     tty: true
     ports:
       - ${NGINX_PORT}:80
