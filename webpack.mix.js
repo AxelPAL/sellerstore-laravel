@@ -29,5 +29,6 @@ mix.combine([
     'node_modules/list.js/dist/list.min.js',
     'node_modules/intro.js/minified/intro.min.js',
     'node_modules/swipebox/src/js/jquery.swipebox.min.js',
-    'resources/js/app.js'
+    'resources/js/app.js',
+    'resources/js/products.js'
 ], 'public/js/app.js');

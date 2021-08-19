@@ -26,13 +26,13 @@
                 <li>
                     <div class="nav-wrapper">
                         <form action="/search" method="get">
-                            <div class="input-field search-div">
+                            <div class="input-field search-div js-search-div">
                                 <input name="q" type="search" required="required" value="{{$q}}" class="validate"
                                        id="q"/>
                                 <label for="search">
                                     <i class="material-icons">search</i>
                                 </label>
-                                <div class="predict-menu">
+                                <div class="predict-menu in-header">
                                     <ul class="orange accent-4"></ul>
                                 </div>
                             </div>

@@ -4,10 +4,13 @@
     <h1>Поиск продукции</h1>
     <div class="row">
         <form action="/search" method="GET">
-            <div class="input-field search-wrapper col s12 m6 l6">
+            <div class="input-field js-search-div search-wrapper col s12 m6 l6">
                 <i class="material-icons prefix">search</i>
                 <input class="query" id="query" name="q" required preloader="Поисковый запрос" type="search" value="{{$q}}"/>
                 <label class="active search-page-label" for="query">Поиск</label>
+            </div>
+            <div class="predict-menu col s12">
+                <div></div>
             </div>
             <div class="col s12 m6 l6 search-button-div">
                 <button class="waves-effect waves-light btn search-button orange accent-4" type="submit">

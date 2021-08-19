@@ -1,11 +1,5 @@
-//main
-var slideWidth = 220;
-// document.addEventListener("turbolinks:request-start", function(event) {
-//     $("link[rel*='icon']").each(function(){
-//         $(this).data('icon', $(this).attr("href")).attr("href", "/images/ring.gif");
-//     });
-// });
-$(document).on('ready turbolinks:load', function () {
+let slideWidth = 220;
+$(document).on('ready', function () {
     init();
 });
 
@@ -14,29 +8,33 @@ function init() {
         $(this).attr("href", $(this).data('icon'));
     });
     $(".button-collapse").sideNav();
-    var $searchDiv = $(".search-div");
-    var $text = $searchDiv.find('input');
+    let $searchDiv = $(".js-search-div");
+    let $text = $searchDiv.find('input');
     $searchDiv.find('i').on('click', function () {
         $(this).closest(".search-div").find('input').focus();
     });
     $text.on('change keyup', function () {
-        var self = $(this);
+        let self = $(this);
         clearTimeout(window.predict);
         window.predict = setTimeout(function () {
-            var query = self.val();
+            let query = self.val();
             if(query){
                 $.ajax({
                     url: '/search/predict/' + query,
                     success: function (msg) {
-                        var words = msg;
-                        var $listElement = $(".predict-menu > ul");
-                        $listElement.find("li").remove();
+                        let words = msg;
+                        let $listElementHeader = $(".predict-menu > ul");
+                        let $listElementPage = $(".predict-menu > div");
+                        $listElementHeader.find("li").remove();
+                        $listElementPage.find(".prediction").remove();
                         if (words) {
-                            for (var i in words) {
+                            for (let i in words) {
                                 if (words.hasOwnProperty(i)) {
-                                    var word = words[i];
-                                    var $liElement = $("<li>").html(word);
-                                    $listElement.append($liElement[0]);
+                                    let word = words[i];
+                                    let $liElement = $("<li>").html(word);
+                                    let $predictionElement = $("<div>").addClass('prediction orange accent-4').html(word);
+                                    $listElementHeader.append($liElement[0]);
+                                    $listElementPage.append($predictionElement[0]);
                                 }
                             }
                         }
@@ -50,7 +48,7 @@ function init() {
     $(".sidebar-wrapper").sticky({topSpacing: 0});
     $(".sort").tablesorter();
     if($("#product-info-table").is("*")){
-        var numberOfSlides = Math.ceil($("#product-info-table").width() / slideWidth);
+        let numberOfSlides = Math.ceil($("#product-info-table").width() / slideWidth);
         if($("#product-info-table").width() < slideWidth*2){
             numberOfSlides = 1;
         }
@@ -62,7 +60,7 @@ function init() {
     }
 
     if ($("#comments-wrapper").is("*")) {
-        var commentList = new List('comments-wrapper', {
+        let commentList = new List('comments-wrapper', {
             valueNames: ['comment'],
             page: 5,
             pagination: true
@@ -104,7 +102,7 @@ function init() {
 
     $('html').click(function(e) {
         if($(e.target).parents('.search-div').length == 0) {
-            $('.predict-menu ul li').each(function (index) {
+            $('.predict-menu.in-header ul li').each(function (index) {
                 $(this).fadeOut(400, function () {
                     $(this).remove();
                 })
@@ -128,7 +126,7 @@ function init() {
             url: window.location.href + "/responses",
             success: function (data) {
                 $(".load-responses").html(data);
-                var commentList = new List('comments-wrapper', {
+                let commentList = new List('comments-wrapper', {
                     valueNames: ['comment'],
                     page: 5,
                     pagination: true
@@ -138,8 +136,8 @@ function init() {
     }
 }
 
-var getUrlParameter = function getUrlParameter(sParam) {
-    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+let getUrlParameter = function getUrlParameter(sParam) {
+    let sPageURL = decodeURIComponent(window.location.search.substring(1)),
         sURLVariables = sPageURL.split('&'),
         sParameterName,
         i;
@@ -152,14 +150,3 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
 };
-//main
-
-
-
-//products page
-$(function () {
-    $(".card-action > form").on('submit', function () {
-        yaCounter36646980.reachGoal('button-buy');
-    });
-});
-//products page
