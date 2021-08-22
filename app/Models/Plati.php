@@ -66,15 +66,19 @@ class Plati
      */
     private function getResponseFromPlati(SimpleXMLElement $xml, string $pageName): SimpleXMLElement
     {
-        $result = $this->client->post($this->getPlatiBaseUrl() . "/xml/$pageName.asp", [
-            'body'    => $xml->asXML(),
-            'headers' => [
-                'Content-Type' => 'text/xml',
-                'User-Agent'   => env('USER_AGENT_FOR_PLATI'),
-            ],
-        ]);
-        $content = $result->getBody()->getContents();
-        return simplexml_load_string($content) ?: new SimpleXMLElement('');
+        $body = $xml->asXML();
+        $content = $this->cache::remember(md5($body . $pageName), 60 * 60 * 24, function () use ($body, $pageName) {
+            $result = $this->client->post($this->getPlatiBaseUrl() . "/xml/$pageName.asp", [
+                'body'    => $body,
+                'headers' => [
+                    'Content-Type' => 'text/xml',
+                    'User-Agent'   => env('USER_AGENT_FOR_PLATI'),
+                ],
+            ]);
+            return $result->getBody()->getContents();
+        });
+
+        return $content !== null ? simplexml_load_string($content) : new SimpleXMLElement('');
     }
 
     public function getPlatiBaseUrl(): string
