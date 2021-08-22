@@ -78,7 +78,12 @@ class Plati
             return $result->getBody()->getContents();
         });
 
-        return $content !== null ? simplexml_load_string($content) : new SimpleXMLElement('');
+        $response = $content !== null ? simplexml_load_string($content) : new SimpleXMLElement('');
+        if (!$response) {
+            $response = new SimpleXMLElement('');
+        }
+
+        return $response;
     }
 
     public function getPlatiBaseUrl(): string
