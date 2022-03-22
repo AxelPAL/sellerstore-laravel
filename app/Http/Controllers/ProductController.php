@@ -30,9 +30,13 @@ class ProductController extends Controller
     /**
      * @throws GuzzleException
      */
-    public function product(int $id, Plati $plati): View|Factory
+    public function product(int $id, Plati $plati): View|Factory|RedirectResponse
     {
         $product = $plati->getProduct($id);
+
+        if (empty((string)$product->available_goods)) {
+            return redirect('/');
+        }
 
         /**transformations**/
         $product->{'price'} = $product->{'price_goods'}->wmr;
