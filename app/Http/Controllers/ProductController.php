@@ -17,14 +17,9 @@ use Meta;
 
 class ProductController extends Controller
 {
-    /**
-     * @var UserAgent
-     */
-    private UserAgent $userAgent;
-
-    public function __construct(UserAgent $userAgent)
+    public function __construct(private readonly UserAgent $userAgent)
     {
-        $this->userAgent = $userAgent;
+
     }
 
     /**
@@ -33,10 +28,6 @@ class ProductController extends Controller
     public function product(int $id, Plati $plati): View|Factory|RedirectResponse
     {
         $product = $plati->getProduct($id);
-
-        if (empty((string)$product->available_goods)) {
-            return redirect('/');
-        }
 
         /**transformations**/
         $product->{'price'} = $product->{'price_goods'}->wmr;
