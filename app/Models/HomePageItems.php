@@ -110,6 +110,7 @@ class HomePageItems
         if ($xml) {
             foreach ($xml->section as $section) {
                 $name = (string)$section->name;
+                // @phpstan-ignore-next-line
                 $id = (string)$section->attributes()->id;
                 $categories[] = compact('id', 'name');
             }

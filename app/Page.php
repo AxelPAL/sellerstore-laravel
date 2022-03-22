@@ -41,7 +41,7 @@ use Illuminate\Database\Eloquent\Model;
 class Page extends Model
 {
     /**
-     * @var array
+     * @var string[]
      */
     protected $fillable = [
         'author_id',

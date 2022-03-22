@@ -91,7 +91,7 @@ class Kernel extends HttpKernel
      *
      * This forces non-global middleware to always be in the given order.
      *
-     * @var array
+     * @var string[]
      */
     protected $middlewarePriority = [
         StartSession::class,

@@ -54,7 +54,7 @@ class User extends \TCG\Voyager\Models\User
     /**
      * The attributes that are mass assignable.
      *
-     * @var array
+     * @var string[]
      */
     protected $fillable = [
         'name',

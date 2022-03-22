@@ -11,21 +11,12 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 class Kernel extends ConsoleKernel
 {
     /**
-     * The Artisan commands provided by your application.
-     *
-     * @var array
-     */
-    protected $commands = [
-        //
-    ];
-
-    /**
      * Define the application's command schedule.
      *
      * @param Schedule $schedule
      * @return void
      */
-    protected function schedule(Schedule $schedule)
+    protected function schedule(Schedule $schedule): void
     {
         $schedule->command(ParseHomePage::class)->everyTwoHours();
         $schedule->command(ParseSidebar::class)->everySixHours();
@@ -37,7 +28,7 @@ class Kernel extends ConsoleKernel
      *
      * @return void
      */
-    protected function commands()
+    protected function commands(): void
     {
         $this->load(__DIR__ . '/Commands');
 
