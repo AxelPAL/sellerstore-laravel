@@ -9,13 +9,6 @@ services:
     entrypoint: /wait-for mysql:5432 -t 60 -- /app-entrypoint.sh
     command: php-fpm -R -F
     env_file: .env
-    environment:
-      XDEBUG_CONFIG: ${XDEBUG_CONFIG}
-      PHP_IDE_CONFIG: "serverName=sellerstore-laravel"
-      STARTUP_START_SUPERVISORD: "true"
-      STARTUP_START_CONSUMERS: "true"
-      STARTUP_START_CRON: "true"
-      DEFAULT_WORKERS_COUNT: 2
     networks:
       app_net:
     volumes:

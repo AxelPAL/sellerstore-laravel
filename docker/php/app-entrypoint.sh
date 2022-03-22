@@ -5,6 +5,7 @@ APP_DIR="${APP_DIR:-/app}";
 STARTUP_START_SUPERVISORD="${STARTUP_START_SUPERVISORD:-false}"
 STARTUP_START_CONSUMERS="${STARTUP_START_CONSUMERS:-false}"
 STARTUP_START_CRON="${STARTUP_START_CRON:-false}"
+STARTUP_PARSE_PLATI="${STARTUP_PARSE_PLATI:-false}"
 CRON_TIME="${CRON_TIME:-* * * * *}"
 
 if [ "${STARTUP_START_SUPERVISORD}" = "true" ]; then
@@ -31,7 +32,9 @@ if [ "${STARTUP_START_CONSUMERS}" = "true" ]; then
 fi;
 
 cd "${APP_DIR}" && ./artisan optimize;
-./artisan app:parse-si; ./artisan app:parse-st; ./artisan app:parse-ho
+if [ "${STARTUP_PARSE_PLATI}" = "true" ]; then
+  ./artisan app:parse-si; ./artisan app:parse-st; ./artisan app:parse-ho
+fi;
 ./artisan responsecache:clear
 touch "/${APP_DIR}/storage/preload.php"
 

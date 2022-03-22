@@ -4,7 +4,7 @@
     {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render('product', $helper->prepareDescription((string)$product->name_goods), (int)$product->id_section, (string)$product->name_section) }}
 @stop
 @section('content')
-    <h1>{{$helper->prepareDescription($product->name_goods)}}</h1>
+    <h1>{!! $helper->prepareDescription($product->name_goods) !!}</h1>
     <div class="product-info">
         <div class="main-block col s12">
             <div class="col s12 m12 l9">
@@ -113,7 +113,7 @@
                                 @foreach($responses as $response)
                                     <li class="comment {{$response->type_response}}">
                                         <div class="comment-date">{{$response->date_response}}</div>
-                                        <div class="comment-text">{{$response->text_response}}</div>
+                                        <div class="comment-text">{!! $response->text_response !!}</div>
                                         @if (!empty($response->{'comment'}))
                                             <div class="comment-response">Ответ продавца: {{$response->comment}}
                                             </div>
