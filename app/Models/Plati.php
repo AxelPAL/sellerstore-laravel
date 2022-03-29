@@ -6,6 +6,7 @@ use Cache;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use JsonException;
+use Psr\SimpleCache\InvalidArgumentException;
 use SimpleXMLElement;
 use Throwable;
 
@@ -27,7 +28,7 @@ class Plati
     }
 
     /**
-     * @throws JsonException|GuzzleException
+     * @throws JsonException|InvalidArgumentException
      */
     public function getSidebar(): array
     {
@@ -62,7 +63,6 @@ class Plati
      * @param SimpleXMLElement $xml
      * @param string $pageName
      * @return SimpleXMLElement
-     * @throws GuzzleException
      */
     private function getResponseFromPlati(SimpleXMLElement $xml, string $pageName): SimpleXMLElement
     {
@@ -78,9 +78,10 @@ class Plati
             return $result->getBody()->getContents();
         });
 
-        $response = $content !== null ? simplexml_load_string($content) : new SimpleXMLElement('');
-        if (!$response) {
-            $response = new SimpleXMLElement('');
+        try {
+            $response = simplexml_load_string($content);
+        } catch (Throwable) {
+            $response = new SimpleXMLElement('<xml />');
         }
 
         return $response;
@@ -97,7 +98,7 @@ class Plati
     }
 
     /**
-     * @throws GuzzleException
+     * @throws GuzzleException|InvalidArgumentException
      */
     public function getStatistics(): string
     {
@@ -127,7 +128,6 @@ class Plati
     /**
      * @param int $id
      * @return SimpleXMLElement
-     * @throws GuzzleException
      */
     public function getProduct(int $id): SimpleXMLElement
     {
@@ -141,7 +141,6 @@ class Plati
     /**
      * @param int|null $id
      * @return SimpleXMLElement
-     * @throws GuzzleException
      */
     public function getSections(?int $id = 0): SimpleXMLElement
     {
@@ -157,7 +156,6 @@ class Plati
      * @param int|null $id
      * @param int $page
      * @return SimpleXMLElement
-     * @throws GuzzleException
      */
     public function getGoods(?int $id = null, int $page = 1): SimpleXMLElement
     {
@@ -174,7 +172,6 @@ class Plati
     /**
      * @param int|null $id
      * @return SimpleXMLElement
-     * @throws GuzzleException
      */
     public function getSellerInfo(?int $id = null): SimpleXMLElement
     {
@@ -202,7 +199,7 @@ class Plati
             usort($data['items'], static function ($item1, $item2) {
                 return $item1['price_rur'] <=> $item2['price_rur'];
             });
-        } catch (Throwable $e) {
+        } catch (Throwable) {
         }
         return $data;
     }
@@ -352,7 +349,6 @@ class Plati
     /**
      * @param int|null $id
      * @return SimpleXMLElement
-     * @throws GuzzleException
      */
     public function getSellerGoods(?int $id = null): SimpleXMLElement
     {
