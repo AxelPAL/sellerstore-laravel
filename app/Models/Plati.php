@@ -79,7 +79,7 @@ class Plati
         });
 
         try {
-            $response = simplexml_load_string($content);
+            $response = simplexml_load_string($content) ?: new SimpleXMLElement('<xml />');
         } catch (Throwable) {
             $response = new SimpleXMLElement('<xml />');
         }
