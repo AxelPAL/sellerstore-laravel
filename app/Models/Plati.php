@@ -18,6 +18,8 @@ class Plati
     protected const CACHE_STATISTICS_KEY = 'Statistics';
     protected const CACHE_SIDEBAR_KEY = 'Sidebar';
 
+    protected const ENG_LANG = 'en-US';
+
     private Client $client;
     private Cache $cache;
 
@@ -127,15 +129,21 @@ class Plati
 
     /**
      * @param int $id
+     * @param string $lang
      * @return SimpleXMLElement
      */
-    public function getProduct(int $id): SimpleXMLElement
+    public function getProduct(int $id, string $lang = 'ru-RU'): SimpleXMLElement
     {
         $data = [
             'id_goods' => $id,
+            'lang' => $lang
         ];
         $xml = $this->prepareXml($data);
-        return $this->getResponseFromPlati($xml, 'goods_info');
+        $data = $this->getResponseFromPlati($xml, 'goods_info');
+        if (empty((string)$data->name_goods) && $lang !== self::ENG_LANG) {
+            $data = $this->getProduct($id, self::ENG_LANG);
+        }
+        return $data;
     }
 
     /**

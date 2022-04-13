@@ -34,7 +34,7 @@
                 <tr>
                     <td>
                         <a class="waves-effect waves-teal btn-flat"
-                           href="{{"/products/{$product['id']}"}}">{{$helper->prepareDescription($product['name'])}}</a>
+                           href="{{"/products/{$product['id']}"}}">{{$helper->prepareDescription($product['name'] ?: $product['name_eng'])}}</a>
                     </td>
                     <td class="price-sign">{{number_format($product['price_rur'], 0, '.', ' ')}}
                     </td>
