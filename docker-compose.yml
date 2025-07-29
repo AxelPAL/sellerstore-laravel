@@ -46,7 +46,7 @@ services:
     networks:
       app_net:
   mysql:
-    image: mysql
+    image: mysql:8.0
     command: --default-authentication-plugin=mysql_native_password
     tty: true
     profiles:
