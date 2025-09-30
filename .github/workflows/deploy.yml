@@ -12,13 +12,43 @@ jobs:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      - name: deploy to host
-        uses: cross-the-world/ssh-pipeline@master
+      - name: Install SSH key
+        uses: webfactory/ssh-agent@v0.9.0
         with:
-          host: ${{ secrets.SSH_HOST }}
-          user: ${{ secrets.SSH_USER }}
-          key:  ${{ secrets.SSH_KEY }}
-          script: |
-            cd /var/www/sellerstore-laravel
-            docker compose pull
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add host key
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p${{ secrets.SSH_PORT }} -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy to server
+        run: |
+          # Create deployment directory
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p${{ secrets.SSH_PORT }} "mkdir -p ${{ secrets.SSH_PATH }}"        
+          
+          # Deploy using docker-compose
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p${{ secrets.SSH_PORT }} "
+            cd ${{ secrets.SSH_PATH }} && \
+            docker compose pull && \
             docker compose up -d
+          "
+
+      - name: Verify deployment
+        run: |
+          # Wait for services to start
+          sleep 10
+          
+          # Check if services are running
+          ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} -p${{ secrets.SSH_PORT }} "
+            cd ${{ secrets.SSH_PATH }}
+            if docker compose ps | grep -q 'Up'; then
+              echo 'Deployment successful: Services are running'
+              exit 0
+            else
+              echo 'Deployment might have failed: Services are not running'
+              docker compose ps
+              docker compose logs
+              exit 1
+            fi
+          "
