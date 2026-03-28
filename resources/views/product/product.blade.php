@@ -76,7 +76,7 @@
                     <div class="card blue-grey darken-1">
                         @if ($product->price > 0)
                             <div class="card-content white-text">
-                                <div class="price"><span>₽</span> {{number_format((float)$product->price, 2, '.', ' ')}}
+                                <div class="price">@if($product->currency === '$')<span>{{$product->currency}}</span> {{number_format((float)$product->price, 2, '.', ' ')}}@else{{number_format((float)$product->price, 2, '.', ' ')}} <span>{{$product->currency}}</span>@endif
                                 </div>
                             </div>
                         @endif

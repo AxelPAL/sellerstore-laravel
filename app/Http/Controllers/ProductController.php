@@ -39,7 +39,14 @@ class ProductController extends Controller
         $product = $plati->getProduct($id);
 
         /**transformations**/
-        $product->{'price'} = $product->{'price_goods'}->wmr;
+        $wmr = $product->{'price_goods'}->wmr ?? null;
+        if (!empty($wmr)) {
+            $product->{'price'} = $wmr;
+            $product->{'currency'} = '₽';
+        } else {
+            $product->{'price'} = $product->{'price_goods'}->wmz ?? 0;
+            $product->{'currency'} = '$';
+        }
         /**transformations**/
 
         $productHelper = new ProductView();
