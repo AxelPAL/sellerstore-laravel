@@ -1,35 +1,36 @@
 services:
   tests:
-    image: ghcr.io/axelpal/sellerstore-laravel-app:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-app:${IMAGE_TAG:-local}
     tty: true
     entrypoint: ""
     command: ./artisan test
     depends_on:
-      - mysql
+      - pgsql
       - redis
   phpstan:
-    image: ghcr.io/axelpal/sellerstore-laravel-app:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-app:${IMAGE_TAG:-local}
     tty: true
     entrypoint: ""
     command: ./vendor/bin/phpstan analyse .
     depends_on:
-      - mysql
+      - pgsql
       - redis
   app:
-    image: ghcr.io/axelpal/sellerstore-laravel-app:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-app:${IMAGE_TAG:-local}
     tty: true
-    entrypoint: /wait-for mysql:3306 -t 60 -- /app-entrypoint.sh
+    entrypoint: /wait-for pgsql:5432 -t 60 -- /app-entrypoint.sh
     depends_on:
-      - mysql
+      - pgsql
       - redis
   nginx:
-    image: ghcr.io/axelpal/sellerstore-laravel-nginx:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-nginx:${IMAGE_TAG:-local}
     depends_on:
       - app
   redis:
     image: redis
-  mysql:
-    image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
+  pgsql:
+    image: postgres:16-alpine
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      POSTGRES_USER: postgres
+      POSTGRES_DB: sellerstore
+      POSTGRES_HOST_AUTH_METHOD: trust

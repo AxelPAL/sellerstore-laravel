@@ -2,9 +2,9 @@
 @extends('layouts.app')
 @section('breadcrumbs')
     @if($product->name_goods)
-        {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render('product', $helper->prepareDescription((string)$product->name_goods), (int)$product->id_section, (string)$product->name_section) }}
+        {{ \Diglactic\Breadcrumbs\Breadcrumbs::render('product', $helper->prepareDescription((string)$product->name_goods), (int)$product->id_section, (string)$product->name_section) }}
     @else
-        {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render('catalog') }}
+        {{ \Diglactic\Breadcrumbs\Breadcrumbs::render('catalog') }}
     @endif
 @stop
 @section('content')
@@ -76,7 +76,7 @@
                     <div class="card blue-grey darken-1">
                         @if ($product->price > 0)
                             <div class="card-content white-text">
-                                <div class="price"><span>₽</span> {{number_format((float)$product->price, 2, '.', ' ')}}
+                                <div class="price">@if($product->currency === '$')<span>{{$product->currency}}</span> {{number_format((float)$product->price, 2, '.', ' ')}}@else{{number_format((float)$product->price, 2, '.', ' ')}} <span>{{$product->currency}}</span>@endif
                                 </div>
                             </div>
                         @endif

@@ -28,7 +28,7 @@ class ProductController extends Controller
     public function product(int $id, Plati $plati): View|Factory|RedirectResponse
     {
         $redirectProductIds = env('BLOCKED_PRODUCT_IDS');
-        if ($redirectProductIds) {
+        if (is_string($redirectProductIds) && $redirectProductIds !== '') {
             $idsToRedirect = explode(',', $redirectProductIds);
             $idsToRedirect = array_map('trim', $idsToRedirect); // Remove any whitespace
             if (in_array((string)$id, $idsToRedirect)) {
@@ -39,7 +39,14 @@ class ProductController extends Controller
         $product = $plati->getProduct($id);
 
         /**transformations**/
-        $product->{'price'} = $product->{'price_goods'}->wmr;
+        $wmr = $product->{'price_goods'}->wmr ?? null;
+        if (!empty($wmr)) {
+            $product->{'price'} = $wmr;
+            $product->{'currency'} = '₽';
+        } else {
+            $product->{'price'} = $product->{'price_goods'}->wmz ?? 0;
+            $product->{'currency'} = '$';
+        }
         /**transformations**/
 
         $productHelper = new ProductView();

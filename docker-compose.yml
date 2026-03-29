@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./docker/php/Dockerfile
     tty: true
-    entrypoint: /wait-for mysql:5432 -t 60 -- /app-entrypoint.sh
+    entrypoint: /wait-for pgsql:5432 -t 60 -- /app-entrypoint.sh
     command: php-fpm -R -F
     env_file: .env
     networks:
@@ -45,21 +45,22 @@ services:
       - redis_data:/data:delegated
     networks:
       app_net:
-  mysql:
-    image: mysql:8.0
-    command: --default-authentication-plugin=mysql_native_password
+  pgsql:
+    image: postgres:16-alpine
     tty: true
     profiles:
       - db
     environment:
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      POSTGRES_USER: postgres
+      POSTGRES_DB: sellerstore
+      POSTGRES_HOST_AUTH_METHOD: trust
     networks:
       app_net:
     volumes:
-      - mysql_data:/var/lib/mysql:delegated
+      - pgsql_data:/var/lib/postgresql/data:delegated
 
 volumes:
-  mysql_data:
+  pgsql_data:
   redis_data:
   phpstan_data:
 

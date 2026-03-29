@@ -7,6 +7,7 @@ use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\GuzzleException;
 use PHPHtmlParser\Dom;
+use PHPHtmlParser\Dom\Node\HtmlNode;
 use PHPHtmlParser\Exceptions\ChildNotFoundException;
 use PHPHtmlParser\Exceptions\CircularException;
 use PHPHtmlParser\Exceptions\CurlException;
@@ -48,7 +49,6 @@ class HomePageItems
         $id = 500;
         $items = [];
         while ($id > 0) {
-            $id = $id === -1 ? 0 : $id; /* @phpstan-ignore-line */
             $queryParams['id'] = $id;
             $result = $this->client->get(
                 env('PLATI_BASE_URL') . '/asp/items.asp',
@@ -65,11 +65,12 @@ class HomePageItems
             if (!empty($matches[1])) {
                 $content = str_replace($matches[1], '', $content);
             }
-            $dom->load($content);
+            $dom->loadStr($content);
             $divs = $dom->find('div');
             foreach ($divs as $div) {
-                /** @var Dom\HtmlNode $link */
-                /** @var Dom $div */
+                if (!$div instanceof HtmlNode) {
+                    continue;
+                }
                 $link = $div->getChildren()[0];
                 $tag = $link->getTag();
                 $linkInHref = $tag->getAttribute('href')['value'];
@@ -86,7 +87,7 @@ class HomePageItems
             }
             $id = isset($matches[2]) ? (int)$matches[2] : 0;
         }
-        $this->cache::set(self::HOME_ITEMS_CACHE_KEY, $items); /* @phpstan-ignore-line */
+        $this->cache::set(self::HOME_ITEMS_CACHE_KEY, $items);
         return $items;
     }
 
@@ -110,12 +111,10 @@ class HomePageItems
         if ($xml) {
             foreach ($xml->section as $section) {
                 $name = (string)$section->name;
-                // @phpstan-ignore-next-line
                 $id = (string)$section->attributes()->id;
                 $categories[] = compact('id', 'name');
             }
         }
-        /** @phpstan-ignore-next-line */
         $this->cache::set(self::POPULAR_CATEGORIES_CACHE_KEY, $categories);
         return $categories;
     }

@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Illuminate\Foundation\Auth;
+
+/**
+ * Stubs for auth traits shipped with laravel/ui; framework versions without
+ * these files still reference the same namespaces in app scaffolding.
+ */
+trait AuthenticatesUsers
+{
+}
+
+trait RegistersUsers
+{
+}
+
+trait ResetsPasswords
+{
+}
+
+trait SendsPasswordResetEmails
+{
+}
+
+trait VerifiesEmails
+{
+}

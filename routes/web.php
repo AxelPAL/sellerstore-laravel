@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\SellerController;
+use Illuminate\Support\Facades\Route;
 
 Route::name('home')->get('/', [HomeController::class, 'index']);
 Route::name('catalog')->get('categories', [CategoryController::class, 'index']);
@@ -19,8 +21,5 @@ Route::name('search')->get('search', [SearchController::class, 'index']);
 Route::name('searchSlug')->get('search/{q}', [SearchController::class, 'index']);
 Route::name('predictSearch')->get('search/predict/{q}', [SearchController::class, 'predict']);
 
-Route::group(['prefix' => 'admin'], static function () {
-    Voyager::routes();
-});
-
-Route::get('{slug}', 'PageController@show');
+Route::get('{slug}', [PageController::class, 'show'])
+    ->where('slug', '^(?!admin(?:/|$)).+');

@@ -1,6 +1,8 @@
 includes:
-    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/larastan/larastan/extension.neon
 parameters:
+    scanFiles:
+        - phpstan/stubs/illuminate-foundation-auth-traits.stub
     paths:
         - app
     level: 8
