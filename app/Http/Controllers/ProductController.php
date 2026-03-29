@@ -28,7 +28,7 @@ class ProductController extends Controller
     public function product(int $id, Plati $plati): View|Factory|RedirectResponse
     {
         $redirectProductIds = env('BLOCKED_PRODUCT_IDS');
-        if ($redirectProductIds) {
+        if (is_string($redirectProductIds) && $redirectProductIds !== '') {
             $idsToRedirect = explode(',', $redirectProductIds);
             $idsToRedirect = array_map('trim', $idsToRedirect); // Remove any whitespace
             if (in_array((string)$id, $idsToRedirect)) {

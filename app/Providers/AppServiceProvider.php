@@ -29,7 +29,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(Plati $plati, Request $request): void
     {
         if ( env('APP_ENV') === 'production' ) {
-            URL::forceRootUrl(env('APP_URL'));
+            URL::forceRootUrl((string) config('app.url'));
             URL::forceScheme('https');
         }
         view()->composer('layouts.app', static function ($view) use ($plati, $request) {

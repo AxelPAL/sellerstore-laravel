@@ -46,7 +46,7 @@ class Plati
             512,
             JSON_THROW_ON_ERROR
         );
-        $this->cache::set(self::CACHE_SIDEBAR_KEY, $sidebarContent); /* @phpstan-ignore-line */
+        $this->cache::set(self::CACHE_SIDEBAR_KEY, $sidebarContent);
 
         return $sidebarContent;
     }
@@ -91,7 +91,8 @@ class Plati
 
     public function getPlatiBaseUrl(): string
     {
-        return env('PLATI_BASE_URL', '');
+        $url = env('PLATI_BASE_URL', '');
+        return is_string($url) ? $url : '';
     }
 
     public function getSidebarFromCache(): array
@@ -117,7 +118,7 @@ class Plati
         $contentBegins = mb_strpos($platiResponse, '<div class="statistic">');
         $contentEnds = mb_strpos($platiResponse, '-->', (int)$contentBegins);
         $statistics = mb_substr($platiResponse, (int)$contentBegins, (int)($contentEnds - $contentBegins));
-        $this->cache::set(self::CACHE_STATISTICS_KEY, $statistics); /* @phpstan-ignore-line */
+        $this->cache::set(self::CACHE_STATISTICS_KEY, $statistics);
 
         return $statistics;
     }
