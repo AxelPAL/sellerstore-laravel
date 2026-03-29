@@ -21,7 +21,7 @@ mix.styles([
     'public/css/dist/app.css',
 ], 'public/css/app.css');
 mix.combine([
-    'node_modules/jquery/dist/cdn/jquery-2.1.1.min.js',
+    'node_modules/jquery/dist/jquery.min.js',
     'node_modules/materialize-css/dist/js/materialize.min.js',
     'node_modules/jquery-sticky/jquery.sticky.js',
     'node_modules/tablesorter/dist/js/jquery.tablesorter.min.js',

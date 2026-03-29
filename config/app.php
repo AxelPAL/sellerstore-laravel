@@ -173,6 +173,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\Filament\AdminPanelProvider::class,
         Eusonlito\LaravelMeta\MetaServiceProvider::class,
         Sentry\Laravel\ServiceProvider::class,
 

@@ -1,11 +1,11 @@
-FROM php:8.1-fpm-alpine
+FROM php:8.3-fpm-alpine
 
 ARG INSTALL_XDEBUG=false
 
 RUN set -ex \
   && apk --no-cache add \
-    postgresql-dev bash nodejs npm git autoconf build-base pcre-dev supervisor
-RUN docker-php-ext-install pdo pdo_mysql pdo_pgsql pcntl opcache sockets
+    postgresql-dev bash nodejs npm git autoconf build-base pcre-dev supervisor libzip libzip-dev
+RUN docker-php-ext-install pdo pdo_pgsql pcntl zip intl
 
 RUN pecl install -o -f redis \
 &&  rm -rf /tmp/pear \

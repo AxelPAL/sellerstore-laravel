@@ -3,44 +3,48 @@
     "type": "project",
     "license": "Proprietary",
     "require": {
-        "php": "^8.1",
+        "php": "^8.3",
         "ext-json": "*",
         "ext-simplexml": "*",
-        "davejamesmiller/laravel-breadcrumbs": "5.x",
+        "diglactic/laravel-breadcrumbs": "^10.0",
         "eusonlito/laravel-meta": "^3.1",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "iamcal/lib_autolink": "^1.7",
-        "laravel/framework": "^9.0",
-        "laravel/horizon": "^5.7",
-        "laravel/tinker": "^2.0",
-        "paquettg/php-html-parser": "^2.0",
-        "predis/predis": "^1.1",
-        "sentry/sentry-laravel": "^2",
-        "spatie/laravel-responsecache": "^7",
-        "spiral/roadrunner": "^2.8",
-        "spiral/roadrunner-laravel": "^5.0",
-        "stevegrunwell/time-constants": "^1.1",
-        "tcg/voyager": "^1.4"
+        "filament/filament": "^3.3",
+        "guzzlehttp/guzzle": "^7.8 <7.9",
+        "iamcal/lib_autolink": "^1.9",
+        "laravel/framework": "^10.48",
+        "laravel/horizon": "^5.30",
+        "laravel/tinker": "^2.10",
+        "paquettg/php-html-parser": "^3.1",
+        "predis/predis": "^2.3",
+        "sentry/sentry-laravel": "^4.13",
+        "spatie/laravel-responsecache": "^7.6",
+        "stevegrunwell/time-constants": "^1.2"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.2",
-        "barryvdh/laravel-ide-helper": "^2.6",
-        "beyondcode/laravel-dump-server": "^1.4",
-        "filp/whoops": "^2.0",
-        "fzaninotto/faker": "^1.4",
-        "krlove/eloquent-model-generator": "^1.3",
-        "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^6.1",
-        "nunomaduro/larastan": "^2.0",
-        "phpstan/phpstan": "^1.0",
-        "phpunit/phpunit": "^9.0",
+        "barryvdh/laravel-debugbar": "^3.14",
+        "barryvdh/laravel-ide-helper": "^2.15",
+        "beyondcode/laravel-dump-server": "^2.1",
+        "fakerphp/faker": "^1.24",
+        "filp/whoops": "^2.16",
+        "krlove/eloquent-model-generator": "^2.0",
+        "mockery/mockery": "^1.6",
+        "nunomaduro/collision": "^7.11",
+        "larastan/larastan": "^2.11",
+        "phpstan/phpstan": "^1.12",
+        "phpunit/phpunit": "^10.5",
         "roave/security-advisories": "dev-latest",
-        "squizlabs/php_codesniffer": "*"
+        "squizlabs/php_codesniffer": "^3.11"
     },
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        },
+        "platform": {
+            "php": "8.3.20"
+        }
     },
     "extra": {
         "laravel": {
@@ -78,10 +82,5 @@
             "@php artisan ide-helper:generate"
         ]
     },
-    "repositories": {
-        "hooks": {
-            "type": "composer",
-            "url": "https://larapack.io"
-        }
-    }
+    "repositories": {}
 }

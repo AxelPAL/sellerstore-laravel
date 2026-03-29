@@ -2,9 +2,9 @@
 @extends('layouts.app')
 @section('breadcrumbs')
     @if($product->name_goods)
-        {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render('product', $helper->prepareDescription((string)$product->name_goods), (int)$product->id_section, (string)$product->name_section) }}
+        {{ \Diglactic\Breadcrumbs\Breadcrumbs::render('product', $helper->prepareDescription((string)$product->name_goods), (int)$product->id_section, (string)$product->name_section) }}
     @else
-        {{ \DaveJamesMiller\Breadcrumbs\Facades\Breadcrumbs::render('catalog') }}
+        {{ \Diglactic\Breadcrumbs\Breadcrumbs::render('catalog') }}
     @endif
 @stop
 @section('content')
