@@ -31,11 +31,11 @@ if [ "${STARTUP_START_CONSUMERS}" = "true" ]; then
     echo "[INFO] consumers processes successfully started";
 fi;
 
-cd "${APP_DIR}" && ./artisan optimize;
+cd "${APP_DIR}" && php ./artisan optimize;
 if [ "${STARTUP_PARSE_PLATI}" = "true" ]; then
-  ./artisan app:parse-si; ./artisan app:parse-st; ./artisan app:parse-ho
+  php ./artisan app:parse-si; php ./artisan app:parse-st; php ./artisan app:parse-ho
 fi;
-./artisan responsecache:clear
+php ./artisan responsecache:clear
 touch "/${APP_DIR}/storage/preload.php"
 
 exec "$@";
