@@ -73,7 +73,7 @@ class HomePageItems
                 }
                 $link = $div->getChildren()[0];
                 $tag = $link->getTag();
-                $linkInHref = $tag->getAttribute('href')['value'];
+                $linkInHref = $tag->getAttribute('href')->getValue() ?? '';
                 $itemId = (int)mb_substr($linkInHref, strrpos($linkInHref, '/') + 1);
                 $name = $link->getChildren()[1]->text;
                 $price = $link->getChildren()[2]->text;
