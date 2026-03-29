@@ -1,6 +1,6 @@
 services:
   tests:
-    image: ghcr.io/axelpal/sellerstore-laravel-app:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-app:${IMAGE_TAG:-local}
     tty: true
     entrypoint: ""
     command: ./artisan test
@@ -8,7 +8,7 @@ services:
       - pgsql
       - redis
   phpstan:
-    image: ghcr.io/axelpal/sellerstore-laravel-app:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-app:${IMAGE_TAG:-local}
     tty: true
     entrypoint: ""
     command: ./vendor/bin/phpstan analyse .
@@ -16,14 +16,14 @@ services:
       - pgsql
       - redis
   app:
-    image: ghcr.io/axelpal/sellerstore-laravel-app:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-app:${IMAGE_TAG:-local}
     tty: true
     entrypoint: /wait-for pgsql:5432 -t 60 -- /app-entrypoint.sh
     depends_on:
       - pgsql
       - redis
   nginx:
-    image: ghcr.io/axelpal/sellerstore-laravel-nginx:${GITHUB_REF_SLUG:-local}
+    image: ghcr.io/axelpal/sellerstore-laravel-nginx:${IMAGE_TAG:-local}
     depends_on:
       - app
   redis:
