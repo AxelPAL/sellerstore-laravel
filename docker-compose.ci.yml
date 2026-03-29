@@ -4,8 +4,6 @@ services:
     tty: true
     entrypoint: ""
     command: ./artisan test
-    volumes:
-      - .:/app
     depends_on:
       - pgsql
       - redis
@@ -14,8 +12,6 @@ services:
     tty: true
     entrypoint: ""
     command: ./vendor/bin/phpstan analyse .
-    volumes:
-      - .:/app
     depends_on:
       - pgsql
       - redis
