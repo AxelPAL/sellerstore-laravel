@@ -19,7 +19,6 @@ class ProductController extends Controller
 {
     public function __construct(private readonly UserAgent $userAgent)
     {
-
     }
 
     /**
@@ -40,7 +39,7 @@ class ProductController extends Controller
 
         /**transformations**/
         $wmr = $product->{'price_goods'}->wmr ?? null;
-        if (!empty($wmr)) {
+        if (isset($wmr) && $wmr > 0) {
             $product->{'price'} = $wmr;
             $product->{'currency'} = '₽';
         } else {

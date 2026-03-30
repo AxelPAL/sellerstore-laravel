@@ -1,10 +1,11 @@
+@php use Diglactic\Breadcrumbs\Breadcrumbs; @endphp
 @inject('helper', 'App\View\ProductView')
 @extends('layouts.app')
 @section('breadcrumbs')
     @if($product->name_goods)
-        {{ \Diglactic\Breadcrumbs\Breadcrumbs::render('product', $helper->prepareDescription((string)$product->name_goods), (int)$product->id_section, (string)$product->name_section) }}
+        {{ Breadcrumbs::render('product', $helper->prepareDescription((string)$product->name_goods), (int)$product->id_section, (string)$product->name_section) }}
     @else
-        {{ \Diglactic\Breadcrumbs\Breadcrumbs::render('catalog') }}
+        {{ Breadcrumbs::render('catalog') }}
     @endif
 @stop
 @section('content')
@@ -76,17 +77,18 @@
                     <div class="card blue-grey darken-1">
                         @if ($product->price > 0)
                             <div class="card-content white-text">
-                                <div class="price">@if($product->currency === '$')<span>{{$product->currency}}</span> {{number_format((float)$product->price, 2, '.', ' ')}}@else{{number_format((float)$product->price, 2, '.', ' ')}} <span>{{$product->currency}}</span>@endif
+                                <div class="price">
+                                    <span>{{$product->currency}}</span> {{number_format((float)$product->price, 2, '.', ' ')}}
                                 </div>
                             </div>
                         @endif
                         <div class="card-action">
-                            @if (($product->available_goods > 0 || (string)$product->available_goods === '') && $product->price > 0)
+                            @if (($product->available_goods > 0 || (string)$product->available_goods === ''))
                                 <form method="GET" action="/buy-product">
                                     <input id="product-id" name="product" type="hidden" value="{{$product->id_goods}}"/>
                                     <button class="btn waves-effect waves-light" type="submit">
                                         <i class="material-icons left buy-button">verified_user</i>
-                                        <!--<i class="material-icons left search"></i>-->Купить
+                                        Купить
                                     </button>
                                 </form>
                             @else
