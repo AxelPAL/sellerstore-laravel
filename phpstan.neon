@@ -13,6 +13,5 @@ parameters:
         - vendor
         - */*.blade.php
         - storage
-        - _ide_helper.php
+        - _ide_helper.php (?)
         - routes/console.php
-    checkMissingIterableValueType: false

@@ -4,9 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\SaleResource\Pages;
 use App\Models\Sale;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components as FormComponents;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -14,41 +19,40 @@ class SaleResource extends Resource
 {
     protected static ?string $model = Sale::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('id')
-                    ->disabled()
-                    ->numeric(),
+        return $schema->components([
+            FormComponents\TextInput::make('id')
+                ->disabled()
+                ->numeric(),
 
-                Forms\Components\TextInput::make('ip')
-                    ->required()
-                    ->maxLength(255),
+            FormComponents\TextInput::make('ip')
+                ->required()
+                ->maxLength(255),
 
-                Forms\Components\TextInput::make('product')
-                    ->numeric()
-                    ->required(),
+            FormComponents\TextInput::make('product')
+                ->numeric()
+                ->required(),
 
-                Forms\Components\Textarea::make('user_agent')
-                    ->required()
-                    ->columnSpanFull(),
+            FormComponents\Textarea::make('user_agent')
+                ->required()
+                ->columnSpanFull(),
 
-                Forms\Components\Select::make('is_bot')
-                    ->options([
-                        0 => 'Not bot',
-                        1 => 'Bot',
-                    ])
-                    ->required(),
+            FormComponents\Select::make('is_bot')
+                ->options([
+                    0 => 'Not bot',
+                    1 => 'Bot',
+                ])
+                ->required(),
 
-                Forms\Components\DateTimePicker::make('created_at')
-                    ->disabled(),
+            FormComponents\DateTimePicker::make('created_at')
+                ->disabled(),
 
-                Forms\Components\DateTimePicker::make('updated_at')
-                    ->disabled(),
-            ]);
+            FormComponents\DateTimePicker::make('updated_at')
+                ->disabled(),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -83,12 +87,15 @@ class SaleResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->headerActions([
+                CreateAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->recordActions([
+                EditAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }

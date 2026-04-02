@@ -16,7 +16,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        // Resolve breadcrumbs path at runtime (before package boot). Config cache created on Windows
+        // embeds C:\... paths; Docker on Linux would otherwise require a non-existent host path.
+        $this->app->booting(function () {
+            $path = base_path('routes/breadcrumbs.php');
+            config(['breadcrumbs.files' => is_file($path) ? $path : []]);
+        });
     }
 
     /**

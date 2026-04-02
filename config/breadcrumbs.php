@@ -23,7 +23,7 @@ return [
     |
     */
 
-    'view' => 'breadcrumbs::materialize',
+    'view'                                     => 'breadcrumbs::materialize',
 
     /*
     |--------------------------------------------------------------------------
@@ -37,7 +37,12 @@ return [
     |
     */
 
-    'files' => base_path('routes/breadcrumbs.php'),
+    /*
+     * Uncached config only. `config:cache` on Windows freezes a C:\... path and breaks in Docker;
+     * AppServiceProvider overrides this at runtime before Diglactic boots. Prefer caching config
+     * inside the container you deploy.
+     */
+    'files' => is_file(base_path('routes/breadcrumbs.php')) ? base_path('routes/breadcrumbs.php') : [],
 
     /*
     |--------------------------------------------------------------------------
@@ -49,13 +54,13 @@ return [
     */
 
     // When route-bound breadcrumbs are used but the current route doesn't have a name (UnnamedRouteException)
-    'unnamed-route-exception' => true,
+    'unnamed-route-exception'                  => true,
 
     // When route-bound breadcrumbs are used and the matching breadcrumb doesn't exist (InvalidBreadcrumbException)
     'missing-route-bound-breadcrumb-exception' => true,
 
     // When a named breadcrumb is used but doesn't exist (InvalidBreadcrumbException)
-    'invalid-named-breadcrumb-exception' => true,
+    'invalid-named-breadcrumb-exception'       => true,
 
     /*
     |--------------------------------------------------------------------------
@@ -67,9 +72,9 @@ return [
     */
 
     // Manager
-    'manager-class' => Diglactic\Breadcrumbs\Manager::class,
+    'manager-class'                            => Diglactic\Breadcrumbs\Manager::class,
 
     // Generator
-    'generator-class' => Diglactic\Breadcrumbs\Generator::class,
+    'generator-class'                          => Diglactic\Breadcrumbs\Generator::class,
 
 ];

@@ -1,26 +1,29 @@
 <?php
 
+// Note: Laravel will automatically resolve `Breadcrumbs::` without
+// this import. This is nice for IDE syntax and refactoring.
 use Diglactic\Breadcrumbs\Breadcrumbs;
+// This import is also not required, and you could replace `BreadcrumbTrail $trail`
+//  with `$trail`. This is nice for IDE type checking and completion.
+use Diglactic\Breadcrumbs\Generator as BreadcrumbTrail;
 
-// Home
-Breadcrumbs::for('home', static function ($trail) {
+Breadcrumbs::for('home', static function (BreadcrumbTrail $trail) {
+
     $trail->push('Главная', route('home'));
 });
+Breadcrumbs::for('catalog', static function (BreadcrumbTrail $trail) {
 
-Breadcrumbs::for('catalog', static function ($trail) {
     $trail->parent('home');
-    $trail->push('Каталог', route('catalog', route('catalog')));
+    $trail->push('Каталог', route('catalog'));
 });
+Breadcrumbs::for('category', static function (BreadcrumbTrail $trail, $categoryTitle, $categoryId) {
 
-// Home > Catalog > Category
-Breadcrumbs::for('category', static function ($trail, $categoryTitle, $categoryId) {
     $trail->parent('home');
-    $trail->push('Каталог', route('catalog', route('catalog')));
-    $trail->push($categoryTitle, route ('category', $categoryId));
+    $trail->push('Каталог', route('catalog'));
+    $trail->push($categoryTitle, route('category', ['id' => $categoryId]));
 });
+Breadcrumbs::for('product', static function (BreadcrumbTrail $trail, $productTitle, $categoryId, $categoryTitle) {
 
-// Home > Catalog > Category > Product
-Breadcrumbs::for('product', static function ($trail, $productTitle, $categoryId, $categoryTitle) {
-    $trail->parent('catalog', $categoryTitle, $categoryId);
+    $trail->parent('category', $categoryTitle, $categoryId);
     $trail->push($productTitle);
 });

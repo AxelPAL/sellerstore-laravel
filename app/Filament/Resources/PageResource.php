@@ -4,9 +4,14 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\PageResource\Pages;
 use App\Page;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components as FormComponents;
 use Filament\Resources\Resource;
+use Filament\Schemas\Schema;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -14,41 +19,40 @@ class PageResource extends Resource
 {
     protected static ?string $model = Page::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('slug')
-                    ->required()
-                    ->maxLength(255)
-                    ->unique(ignoreRecord: true),
-                Forms\Components\TextInput::make('author_id')
-                    ->numeric()
-                    ->required()
-                    ->default(fn () => auth()->id()),
-                Forms\Components\Textarea::make('excerpt')
-                    ->columnSpanFull(),
-                Forms\Components\RichEditor::make('body')
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('image')
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('meta_description')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('meta_keywords')
-                    ->columnSpanFull(),
-                Forms\Components\Select::make('status')
-                    ->options([
-                        'ACTIVE' => 'Active',
-                        'INACTIVE' => 'Inactive',
-                        'PENDING' => 'Pending',
-                    ])
-                    ->required(),
-            ]);
+        return $schema->components([
+            FormComponents\TextInput::make('title')
+                ->required()
+                ->maxLength(255),
+            FormComponents\TextInput::make('slug')
+                ->required()
+                ->maxLength(255)
+                ->unique(ignoreRecord: true),
+            FormComponents\TextInput::make('author_id')
+                ->numeric()
+                ->required()
+                ->default(fn () => auth()->id()),
+            FormComponents\Textarea::make('excerpt')
+                ->columnSpanFull(),
+            FormComponents\RichEditor::make('body')
+                ->columnSpanFull(),
+            FormComponents\TextInput::make('image')
+                ->maxLength(255),
+            FormComponents\Textarea::make('meta_description')
+                ->columnSpanFull(),
+            FormComponents\Textarea::make('meta_keywords')
+                ->columnSpanFull(),
+            FormComponents\Select::make('status')
+                ->options([
+                    'ACTIVE'   => 'Active',
+                    'INACTIVE' => 'Inactive',
+                    'PENDING'  => 'Pending',
+                ])
+                ->required(),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -63,12 +67,15 @@ class PageResource extends Resource
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->headerActions([
+                CreateAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->recordActions([
+                EditAction::make(),
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -82,9 +89,9 @@ class PageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPages::route('/'),
+            'index'  => Pages\ListPages::route('/'),
             'create' => Pages\CreatePage::route('/create'),
-            'edit' => Pages\EditPage::route('/{record}/edit'),
+            'edit'   => Pages\EditPage::route('/{record}/edit'),
         ];
     }
 }

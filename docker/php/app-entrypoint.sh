@@ -31,7 +31,14 @@ if [ "${STARTUP_START_CONSUMERS}" = "true" ]; then
     echo "[INFO] consumers processes successfully started";
 fi;
 
-cd "${APP_DIR}" && php ./artisan optimize;
+cd "${APP_DIR}" || exit 1
+# Bind-mount .:/app from Windows/macOS leaves bootstrap/cache/* with host absolute paths.
+# `view:cache` / config then fail inside Linux (C:\... does not exist). Rebuild caches here.
+if [ "${SKIP_OPTIMIZE_CLEAR:-false}" != "true" ]; then
+    echo "[INFO] Clearing Laravel optimize caches (avoids stale host paths on bind mounts)..."
+    php ./artisan optimize:clear || true
+fi
+php ./artisan optimize
 if [ "${STARTUP_PARSE_PLATI}" = "true" ]; then
   php ./artisan app:parse-si; php ./artisan app:parse-st; php ./artisan app:parse-ho
 fi;
