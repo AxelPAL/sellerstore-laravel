@@ -60,6 +60,7 @@ class ProductView
         }
         $content = preg_replace('/\/itm\/(\d+)/i', '/products/$1', (string)$content);
         $content = preg_replace('/\/seller\/(\w+)\/(\w+)/i', '/seller/$2', (string)$content);
+        $content = preg_replace('/(\/products\/\d+)(?:[?&][^\s<"\']*)+/i', '$1', (string)$content);
         return (string)$content;
     }
 

@@ -24,8 +24,13 @@ class ProductController extends Controller
     /**
      * @throws GuzzleException
      */
-    public function product(int $id, Plati $plati): View|Factory|RedirectResponse
+    public function product(string $id, Plati $plati): View|Factory|RedirectResponse
     {
+        $id = $this->normalizeProductId($id);
+        if ($id === null) {
+            abort(404);
+        }
+
         $redirectProductIds = env('BLOCKED_PRODUCT_IDS');
         if (is_string($redirectProductIds) && $redirectProductIds !== '') {
             $idsToRedirect = explode(',', $redirectProductIds);
@@ -58,6 +63,15 @@ class ProductController extends Controller
         $responses = $plati->getResponses((int)$product->{'id_seller'}, $id);
 
         return view('product.product', compact('product', 'responses'));
+    }
+
+    private function normalizeProductId(string $id): ?int
+    {
+        if (!preg_match('/^\d+/', $id, $matches)) {
+            return null;
+        }
+
+        return (int) $matches[0];
     }
 
     public function buy(Request $request): Redirector|RedirectResponse
