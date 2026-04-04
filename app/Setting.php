@@ -36,7 +36,7 @@ use Illuminate\Database\Eloquent\Model;
 class Setting extends Model
 {
     /**
-     * @var array<int, string>
+     * @var list<string>
      */
     protected $fillable = ['title', 'code', 'content', 'created_at', 'updated_at'];
 }

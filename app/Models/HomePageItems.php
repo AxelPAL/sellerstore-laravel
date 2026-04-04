@@ -29,7 +29,7 @@ class HomePageItems
     }
 
     /**
-     * @return array
+     * @return list<array{id: int, name: string, image: string, price: float}>
      * @throws GuzzleException
      * @throws ChildNotFoundException
      * @throws CircularException
@@ -51,11 +51,11 @@ class HomePageItems
         while ($id > 0) {
             $queryParams['id'] = $id;
             $result = $this->client->get(
-                env('PLATI_BASE_URL') . '/asp/items.asp',
+                $this->getPlatiBaseUrl() . '/asp/items.asp',
                 [
                     'query'   => $queryParams,
                     'headers' => [
-                        'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+                        'User-Agent' => $this->getPlatiUserAgent(),
                     ],
                 ]
             );
@@ -92,17 +92,17 @@ class HomePageItems
     }
 
     /**
-     * @return array
+     * @return list<array{id: string, name: string}>
      * @throws GuzzleException
      */
     public function parsePopularCategories(): array
     {
         $categories = [];
         $result = $this->client->get(
-            env('PLATI_BASE_URL') . '/api/top.ashx',
+            $this->getPlatiBaseUrl() . '/api/top.ashx',
             [
                 'headers' => [
-                    'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+                    'User-Agent' => $this->getPlatiUserAgent(),
                 ],
             ]
         );
@@ -119,13 +119,29 @@ class HomePageItems
         return $categories;
     }
 
+    /**
+     * @return list<array{id: string, name: string}>
+     */
     public function getPopularCategoriesFromCache(): array
     {
         return $this->cache::get(self::POPULAR_CATEGORIES_CACHE_KEY, []);
     }
 
+    /**
+     * @return list<array{id: int, name: string, image: string, price: float}>
+     */
     public function getHomeItemsFromCache(): array
     {
         return $this->cache::get(self::HOME_ITEMS_CACHE_KEY, []);
+    }
+
+    private function getPlatiBaseUrl(): string
+    {
+        return (string) config('plati.base_url', '');
+    }
+
+    private function getPlatiUserAgent(): string
+    {
+        return (string) config('plati.user_agent', '');
     }
 }

@@ -31,13 +31,10 @@ class ProductController extends Controller
             abort(404);
         }
 
-        $redirectProductIds = env('BLOCKED_PRODUCT_IDS');
-        if (is_string($redirectProductIds) && $redirectProductIds !== '') {
-            $idsToRedirect = explode(',', $redirectProductIds);
-            $idsToRedirect = array_map('trim', $idsToRedirect); // Remove any whitespace
-            if (in_array((string)$id, $idsToRedirect)) {
-                return redirect('/');
-            }
+        /** @var list<string> $idsToRedirect */
+        $idsToRedirect = config('site.blocked_product_ids', []);
+        if (in_array((string) $id, $idsToRedirect, true)) {
+            return redirect('/');
         }
 
         $product = $plati->getProduct($id);
@@ -62,7 +59,10 @@ class ProductController extends Controller
 
         $responses = $plati->getResponses((int)$product->{'id_seller'}, $id);
 
-        return view('product.product', compact('product', 'responses'));
+        /** @var view-string $view */
+        $view = 'product.product';
+
+        return view($view, compact('product', 'responses'));
     }
 
     private function normalizeProductId(string $id): ?int
@@ -85,8 +85,8 @@ class ProductController extends Controller
         $saleDto->userAgent = $userAgent;
         $saleDto->isBot = $this->userAgent->checkIsBot((string)$userAgent);
         $sale->create($saleDto);
-        $referralCode = env('REFERRAL_CODE');
-        $domain = env('APP_URL');
+        $referralCode = (string) config('site.referral_code', '');
+        $domain = (string) config('app.url', '');
         return redirect(
             "https://www.oplata.info/asp2/pay_wm.asp?id_d=$id&id_po=0&ai=$referralCode&" .
             "curr=WMR&failpage=$domain/products/$id&lang=ru-RU&nocash=973411"

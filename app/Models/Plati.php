@@ -30,6 +30,7 @@ class Plati
     }
 
     /**
+     * @return array<int, mixed>
      * @throws JsonException|InvalidArgumentException
      */
     public function getSidebar(): array
@@ -51,12 +52,15 @@ class Plati
         return $sidebarContent;
     }
 
+    /**
+     * @param array<string, int|string|null> $data
+     */
     private function prepareXml(array $data): SimpleXMLElement
     {
         $xml = new SimpleXMLElement('<digiseller.request></digiseller.request>');
         $xml->addChild('guid_agent', 'C1127FCB0AD845F9A95E51A25973CA3D');
         foreach ($data as $key => $item) {
-            $xml->addChild((string)$key, $item);
+            $xml->addChild((string) $key, $item === null ? null : (string) $item);
         }
         return $xml;
     }
@@ -74,7 +78,7 @@ class Plati
                 'body'    => $body,
                 'headers' => [
                     'Content-Type' => 'text/xml',
-                    'User-Agent'   => env('USER_AGENT_FOR_PLATI'),
+                    'User-Agent'   => $this->getPlatiUserAgent(),
                 ],
             ]);
             return $result->getBody()->getContents();
@@ -91,10 +95,17 @@ class Plati
 
     public function getPlatiBaseUrl(): string
     {
-        $url = env('PLATI_BASE_URL', '');
-        return is_string($url) ? $url : '';
+        return (string) config('plati.base_url', '');
     }
 
+    private function getPlatiUserAgent(): string
+    {
+        return (string) config('plati.user_agent', '');
+    }
+
+    /**
+     * @return array<int, mixed>
+     */
     public function getSidebarFromCache(): array
     {
         return $this->cache::get(self::CACHE_SIDEBAR_KEY, []);
@@ -112,7 +123,7 @@ class Plati
         $platiResponse = $this->client->get($this->getPlatiBaseUrl(), [
             'query'   => $queryParams,
             'headers' => [
-                'User-Agent' => env('USER_AGENT_FOR_PLATI'),
+                'User-Agent' => $this->getPlatiUserAgent(),
             ],
         ])->getBody()->getContents();
         $contentBegins = mb_strpos($platiResponse, '<div class="statistic">');
@@ -191,6 +202,9 @@ class Plati
         return $this->getResponseFromPlati($xml, 'seller_info');
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getSearchData(?string $q = null, int $page = 1): array
     {
         $query = $this->prepareSearchQuery((string)$q);
@@ -201,13 +215,15 @@ class Plati
                 . "/api/search.ashx?query=$query&pagesize=$pageSize&response=json&pagenum=$page", [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'User-Agent'   => env('USER_AGENT_FOR_PLATI'),
+                    'User-Agent'   => $this->getPlatiUserAgent(),
                 ],
             ]);
             $data = json_decode($result->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR) ?: [];
-            usort($data['items'], static function ($item1, $item2) {
-                return $item1['price_rur'] <=> $item2['price_rur'];
-            });
+            if (isset($data['items']) && is_array($data['items'])) {
+                usort($data['items'], static function ($item1, $item2) {
+                    return $item1['price_rur'] <=> $item2['price_rur'];
+                });
+            }
         } catch (Throwable) {
         }
         return $data;
@@ -223,7 +239,7 @@ class Plati
 
     /**
      * @param string|null $q
-     * @return array
+     * @return list<string>
      * @throws GuzzleException
      */
     public function getSearchPredictData(string $q = null): array
@@ -233,7 +249,7 @@ class Plati
             [
                 'headers' => [
                     'Content-Type' => 'application/json',
-                    'User-Agent'   => env('USER_AGENT_FOR_PLATI'),
+                    'User-Agent'   => $this->getPlatiUserAgent(),
                 ],
             ]
         );
@@ -245,7 +261,7 @@ class Plati
                 [
                     'headers' => [
                         'Content-Type' => 'application/json',
-                        'User-Agent'   => env('USER_AGENT_FOR_PLATI'),
+                        'User-Agent'   => $this->getPlatiUserAgent(),
                     ],
                 ]
             );
@@ -258,7 +274,7 @@ class Plati
                 [
                     'headers' => [
                         'Content-Type' => 'application/json',
-                        'User-Agent'   => env('USER_AGENT_FOR_PLATI'),
+                        'User-Agent'   => $this->getPlatiUserAgent(),
                     ],
                 ]
             );
@@ -324,6 +340,7 @@ class Plati
     }
 
     /**
+     * @return array<int, mixed>
      * @throws GuzzleException
      */
     public function getResponses(int $sellerId, ?int $productId = null, int $rows = self::DEFAULT_ROWS_COUNT): array
@@ -341,7 +358,7 @@ class Plati
                 'body'    => $xml->asXML(),
                 'headers' => [
                     'Content-Type' => 'text/xml',
-                    'User-Agent'   => env('USER_AGENT_FOR_PLATI'),
+                    'User-Agent'   => $this->getPlatiUserAgent(),
                 ],
             ]
         );

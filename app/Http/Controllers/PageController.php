@@ -17,6 +17,9 @@ class PageController extends Controller
         Meta::set('description', $page->meta_description);
         Meta::set('keywords', $page->meta_keywords);
 
-        return view('page', compact('page'));
+        /** @var view-string $view */
+        $view = 'page';
+
+        return view($view, compact('page'));
     }
 }

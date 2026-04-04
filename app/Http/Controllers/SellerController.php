@@ -21,7 +21,10 @@ class SellerController extends Controller
         $sellerInfo = $plati->getSellerInfo($id);
         Meta::set('title', 'Продавец ' . $sellerInfo->{'name_seller'} . ' | SellerStore.ru');
 
-        return view('seller.index', compact('sellerInfo'));
+        /** @var view-string $view */
+        $view = 'seller.index';
+
+        return view($view, compact('sellerInfo'));
     }
 
     /**
@@ -34,7 +37,10 @@ class SellerController extends Controller
     {
         $productsData = $plati->getSellerGoods($id);
         $products = $productsData->{'rows'}->{'row'};
-        return view('seller.goods', compact('products'));
+        /** @var view-string $view */
+        $view = 'seller.goods';
+
+        return view($view, compact('products'));
     }
 
     /**
@@ -47,6 +53,9 @@ class SellerController extends Controller
     {
         $responses = $plati->getResponses($id);
 
-        return view('seller.responses', compact('responses'));
+        /** @var view-string $view */
+        $view = 'seller.responses';
+
+        return view($view, compact('responses'));
     }
 }

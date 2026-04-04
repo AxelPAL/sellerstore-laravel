@@ -34,7 +34,10 @@ class SearchController extends Controller
         Meta::set('description', 'SellerStore.ru - поиск цифровых товаров и ключей для игр с мгновенной выдачей');
         Meta::set('keywords', implode(', ', ['купить', 'игру', 'ключ', 'steam', 'steam-ключи', 'steam-игры']));
 
-        return view('search.index', compact('searchData', 'q', 'paginator'));
+        /** @var view-string $view */
+        $view = 'search.index';
+
+        return view($view, compact('searchData', 'q', 'paginator'));
     }
 
     public function predict(Plati $plati, Request $request, string $q): JsonResponse

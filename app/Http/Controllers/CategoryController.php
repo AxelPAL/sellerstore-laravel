@@ -42,6 +42,9 @@ class CategoryController extends Controller
             implode(', ', ['продажа', 'цифровые', 'ключи', 'steam', 'steam-ключи', 'steam-игры', 'купить', 'ключ'])
         );
 
-        return view('sections.index', compact('categories', 'goods', 'paginator', 'id'));
+        /** @var view-string $view */
+        $view = 'sections.index';
+
+        return view($view, compact('categories', 'goods', 'paginator', 'id'));
     }
 }

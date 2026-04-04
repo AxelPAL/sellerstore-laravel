@@ -21,6 +21,9 @@ class HomeController extends Controller
             implode(', ', ['купить', 'игру', 'ключ', 'steam', 'steam-ключи', 'steam-игры'])
         );
 
-        return view('home', compact('popularCategories', 'items'));
+        /** @var view-string $view */
+        $view = 'home';
+
+        return view($view, compact('popularCategories', 'items'));
     }
 }

@@ -37,7 +37,7 @@ class ProductView
 
     public function replaceLinksToPlati(string $content): string
     {
-        $sellerstoreDomain = (string) env('APP_URL_DOMAIN', '');
+        $sellerstoreDomain = (string) config('site.app_url_domain', '');
         $replacements = [
             ['plati.com', $sellerstoreDomain],
             ['PLATI.COM', $sellerstoreDomain],
