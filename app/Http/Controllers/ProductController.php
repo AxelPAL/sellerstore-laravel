@@ -88,7 +88,7 @@ class ProductController extends Controller
         $referralCode = (string) config('site.referral_code', '');
         $domain = (string) config('app.url', '');
         return redirect(
-            "https://www.oplata.info/asp2/pay_wm.asp?id_d=$id&id_po=0&ai=$referralCode&" .
+            "https://www.oplata.info/asp2/pay_wm.asp?id_d=$id&ai=$referralCode&air=$referralCode&" .
             "curr=WMR&failpage=$domain/products/$id&lang=ru-RU&nocash=973411"
         );
     }
